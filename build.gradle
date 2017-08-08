@@ -19,7 +19,7 @@ dependencies {
     // Groovy
     compile 'org.codehaus.groovy:groovy-all:2.4.6'
 
-    // Cucumber
+    // Cucumber and Cucumber JUnit
     compile 'info.cukes:cucumber-groovy:1.2.5'
     testCompile 'info.cukes:cucumber-junit:1.2.5'
 

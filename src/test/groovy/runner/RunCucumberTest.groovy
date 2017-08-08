@@ -9,6 +9,6 @@ import org.junit.runner.RunWith
  * RunCucumberTest
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(glue = 'src/test/groovy/example', features = 'src/test/resources/example', plugin = 'pretty')
+@CucumberOptions(glue = 'src/test/groovy/example', features = 'src/test/resources/example', plugin = ['pretty', 'json:build/cucumber-reports/cucumber-json-report/cucumber-reports.json', 'html:build/cucumber-reports/cucumber-html-report/'])
 class RunCucumberTest {
 }
