@@ -1,3 +1,4 @@
 language: groovy
 
-gradle cucumberTest
+script:
+  - gradle cucumberTest

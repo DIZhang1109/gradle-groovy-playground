@@ -29,5 +29,7 @@ dependencies {
 }
 
 task cucumberTest(type: Test) {
+    dependsOn 'cleanTest'
+
     include '**/RunCucumberTest.class'
 }

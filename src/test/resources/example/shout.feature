@@ -7,4 +7,4 @@ Feature: Shout
     Examples:
       | Word |
       | Hi   |
-
+      | Yeah |
