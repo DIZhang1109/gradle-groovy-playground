@@ -28,10 +28,19 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+/**
+ * This is a personalized test task to run all the cucumber tests through JUnit test suite
+ */
 task cucumberTest(type: Test) {
+    // in order to run test every time even if it is not updated
     dependsOn 'cleanTest'
 
+    // set a system property for the test JVM(s) - for cucumber options
+    systemProperty 'cucumber.options', System.properties.getProperty('cucumber.options')
+
+    // include the entrance of JUnit test suite
     include '**/RunCucumberTest.class'
 
+    // show standard out and standard error of the test JVM(s) on the console
     testLogging.showStandardStreams = true
 }
