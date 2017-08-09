@@ -17,21 +17,26 @@ import static org.hamcrest.CoreMatchers.is
 
 SoapService soapService
 SOAPResponse response
+def soapVersion
 
 Before() {
     soapService = new SoapService()
 }
 
-Given(~/^I have a SOAP request of (.*)$/) { holiday ->
+Given(~/^I have a SOAP (.*) request of (.*)$/) { version, holiday ->
     soapService.initiateSOAPClient()
+    soapVersion = version
 }
 
 When(~/^I send to the endpoint with (.+) and (.+)$/) { holiday, searchYear ->
-    response = soapService.getSOAPResponse getHoliday(holiday), searchYear
+    if (soapVersion == 'V1') {
+        response = soapService.getSOAPV1Response getHoliday(holiday), searchYear
+    } else if (soapVersion == 'V2') {
+        response = soapService.getSOAPV2Response getHoliday(holiday), searchYear
+    }
 }
 
 Then(~/^I should know (.+) of (.+) is (.*)$/) { holiday, year, date ->
-    println response
     def responseName = getHoliday(holiday) + 'Response'
     def responseResult = getHoliday(holiday) + 'Result'
 
