@@ -26,6 +26,9 @@ dependencies {
     // Spock and JUnit
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'junit:junit:4.12'
+
+    // WS Lite
+    compile 'com.github.groovy-wslite:groovy-wslite:1.1.3'
 }
 
 /**
