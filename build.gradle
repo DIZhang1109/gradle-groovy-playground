@@ -29,6 +29,10 @@ dependencies {
 
     // WS Lite
     compile 'com.github.groovy-wslite:groovy-wslite:1.1.3'
+
+    // Simple Log4j
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    testCompile 'org.slf4j:slf4j-simple:1.7.25'
 }
 
 /**
@@ -40,6 +44,10 @@ task cucumberTest(type: Test) {
 
     // set a system property for the test JVM(s) - for cucumber options
     systemProperty 'cucumber.options', System.properties.getProperty('cucumber.options')
+
+    // set up basic slf4j properties
+    systemProperty 'org.slf4j.simpleLogger.showDateTime', 'true'
+    systemProperty 'org.slf4j.simpleLogger.dateTimeFormat', 'yyyy-MM-dd\'T\'HH:mm:ss'
 
     // include the entrance of JUnit test suite
     include '**/RunCucumberTest.class'
