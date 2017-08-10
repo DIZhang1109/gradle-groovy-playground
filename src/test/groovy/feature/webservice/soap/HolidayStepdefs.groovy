@@ -23,16 +23,16 @@ Before() {
     soapService = new SoapService()
 }
 
-Given(~/^I have a SOAP (.*) request of US Holiday$/) { version ->
+Given(~/^I have a SOAP (.+) request of US Holiday$/) { version ->
     soapService.initiateUSHolidaySOAPClient()
     soapVersion = version
 }
 
-When(~/^I send to the endpoint with (.+) and (.+)$/) { holiday, searchYear ->
+When(~/^I send to the endpoint with (.+) and (\d+)$/) { holiday, searchYear ->
     response = (soapVersion == 'V1') ? soapService.getUSHolidaySOAPV1Response(getHoliday(holiday), searchYear) : soapService.getUSHolidaySOAPV2Response(getHoliday(holiday), searchYear)
 }
 
-Then(~/^I should know (.+) of (.+) is (.*)$/) { holiday, year, date ->
+Then(~/^I should know (.+) of (\d+) is (.+)$/) { holiday, year, date ->
     def responseName = getHoliday(holiday) + 'Response'
     def responseResult = getHoliday(holiday) + 'Result'
 

@@ -23,16 +23,16 @@ Before() {
     soapService = new SoapService()
 }
 
-Given(~/^I have a SOAP (.*) request of Calculator$/) { verison ->
+Given(~/^I have a SOAP (.+) request of Calculator$/) { verison ->
     soapService.initiateCalculatorSOAPClient()
     soapVersion = verison
 }
 
-When(~/^I (.*) (.+) by (.+)$/) { action, digit1, digit2 ->
+When(~/^I (\w+) (\d+) by (\d+)$/) { action, digit1, digit2 ->
     response = (soapVersion == 'V1') ? soapService.getCalculatorSOAPV1Response(action, digit1, digit2) : soapService.getCalculatorSOAPV2Response(action, digit1, digit2)
 }
 
-Then(~/^I should get (.+) result: (.+)$/) { action, result ->
+Then(~/^I should get (.+) result: (\d+)$/) { action, result ->
     def responseName = "${action}Response"
     def responseResult = "${action}Result"
 

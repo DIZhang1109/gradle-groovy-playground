@@ -24,6 +24,11 @@ class SoapService {
         client = new SOAPClient('http://www.dneonline.com/calculator.asmx')
     }
 
+    void initiateHolidayService2SOAPClient() {
+        log.info 'Instantiate a new SOAPClient of HolidayService2'
+        client = new SOAPClient('http://www.holidaywebservice.com/HolidayService_v2/HolidayService2.asmx')
+    }
+
     SOAPResponse getUSHolidaySOAPV1Response(name, searchYear) {
         log.info "Send SOAP 1.1 request through $name and $searchYear, then return the response"
         client.send(SOAPAction: "http://www.27seconds.com/Holidays/US/Dates/$name") {
@@ -72,5 +77,10 @@ class SoapService {
                         </$action>
                       </soap12:Body>
                     </soap12:Envelope>""")
+    }
+
+    SOAPResponse getHolidayService2V1Response(name) {
+        log.info "Send SOAP 1.1 request through $name, then return the response"
+        client.send(new File('src/test/resources/payload/webservice/soap/GetCountriesAvailable.xml').text)
     }
 }

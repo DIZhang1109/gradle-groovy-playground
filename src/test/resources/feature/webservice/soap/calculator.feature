@@ -1,5 +1,5 @@
 @all @webservice @SOAP
-Feature: Get math results based on the input of calculator
+  Feature: Get math results based on the input of calculator
 
   @calculator
   Scenario Outline: Send SOAP request to get the math results of calculator
@@ -10,6 +10,6 @@ Feature: Get math results based on the input of calculator
     Examples:
       | Version | Action   | Number 1 | Number 2 | Result |
       | V1      | Add      | 1        | 29       | 30     |
-      | V2      | Subtract | 8        | 6        | 2      |
-      | V1      | Divide   | 100      | 2        | 50     |
-      | V2      | Multiply | 38       | 5        | 190    |
+      | V2      | Subtract | 6        | 5        | 1      |
+      | V1      | Multiply | 38       | 5        | 190    |
+      | V2      | Divide   | 100      | 2        | 50     |
