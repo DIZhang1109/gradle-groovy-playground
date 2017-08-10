@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.is
 
 /**
  * Created by Di on 9/08/17.
- * holidaySoap.feature step definitions
+ * holiday.feature step definitions
  */
 
 SoapService soapService
