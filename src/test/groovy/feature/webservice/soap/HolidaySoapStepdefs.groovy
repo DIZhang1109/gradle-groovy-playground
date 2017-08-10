@@ -23,17 +23,13 @@ Before() {
     soapService = new SoapService()
 }
 
-Given(~/^I have a SOAP (.*) request of (.*)$/) { version, holiday ->
-    soapService.initiateSOAPClient()
+Given(~/^I have a SOAP (.*) request of US Holiday$/) { version ->
+    soapService.initiateUSHolidaySOAPClient()
     soapVersion = version
 }
 
 When(~/^I send to the endpoint with (.+) and (.+)$/) { holiday, searchYear ->
-    if (soapVersion == 'V1') {
-        response = soapService.getSOAPV1Response getHoliday(holiday), searchYear
-    } else if (soapVersion == 'V2') {
-        response = soapService.getSOAPV2Response getHoliday(holiday), searchYear
-    }
+    response = (soapVersion == 'V1') ? soapService.getUSHolidaySOAPV1Response(getHoliday(holiday), searchYear) : soapService.getUSHolidaySOAPV2Response(getHoliday(holiday), searchYear)
 }
 
 Then(~/^I should know (.+) of (.+) is (.*)$/) { holiday, year, date ->

@@ -1,9 +1,9 @@
-@all @webservice
+@all @webservice @SOAP
 Feature: Get US Holiday based on year the user entered
 
-  @SOAP
+  @holiday
   Scenario Outline: Send SOAP request to get the date of US Holiday in a specific year
-    Given I have a SOAP <Version> request of <Holiday>
+    Given I have a SOAP <Version> request of US Holiday
     When I send to the endpoint with <Holiday> and <Year>
     Then I should know <Holiday> of <Year> is <Date>
 
