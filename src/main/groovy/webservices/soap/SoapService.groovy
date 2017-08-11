@@ -1,6 +1,7 @@
 package webservices.soap
 
 import groovy.util.logging.Slf4j
+import org.yaml.snakeyaml.Yaml
 import wslite.soap.SOAPClient
 import wslite.soap.SOAPResponse
 import wslite.soap.SOAPVersion
@@ -13,6 +14,11 @@ import wslite.soap.SOAPVersion
 @Slf4j
 class SoapService {
     SOAPClient client
+    Yaml yaml
+
+    SoapService() {
+        yaml = new Yaml()
+    }
 
     void initiateUSHolidaySOAPClient() {
         log.info 'Instantiate a new SOAPClient of US Holiday'
@@ -79,8 +85,9 @@ class SoapService {
                     </soap12:Envelope>""")
     }
 
-    SOAPResponse getHolidayService2V1Response(name) {
+    SOAPResponse getHolidayService2Response(version, name) {
         log.info "Send SOAP 1.1 request through $name, then return the response"
-        client.send(new File('src/test/resources/payload/webservice/soap/GetCountriesAvailable.xml').text)
+        def path = System.getProperty('user.dir') + yaml.load(('src/test/config.yml' as File).text)."$name"
+        (version == 'V1')? client.send(new File(path).text) : client.send(SOAPVersion.V1_2, new File(path).text)
     }
 }

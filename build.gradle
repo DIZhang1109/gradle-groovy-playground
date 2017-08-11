@@ -33,6 +33,9 @@ dependencies {
     // Simple Log4j
     compile 'org.slf4j:slf4j-api:1.7.25'
     testCompile 'org.slf4j:slf4j-simple:1.7.25'
+
+    // Snakeyaml
+    compile 'org.yaml:snakeyaml:1.18'
 }
 
 /**

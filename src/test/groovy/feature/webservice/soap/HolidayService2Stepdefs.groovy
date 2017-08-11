@@ -28,10 +28,12 @@ Given(~/^I have a SOAP (.+) request of Holiday Service 2$/) { version ->
     soapVersion = version
 }
 
-When(~/^I send to the endpoint with (\w+)$/) { name ->
-    response = soapService.getHolidayService2V1Response name
+When(~/^I send to the endpoint with (\w+) in SOAP (.+)$/) { name, version ->
+    response = soapService.getHolidayService2Response version, name
 }
 
 Then(~/^I should get all the countries available$/) { ->
+    println response.text
+
     assertThat response.httpResponse.statusCode, is(200)
 }

@@ -1,0 +1,2 @@
+GetCountriesAvailable: /src/test/resources/payload/webservice/soap/GetCountriesAvailable/request.xml
+GetHolidaysAvailable: /src/test/resources/payload/webservice/soap/GetHolidaysAvailable/request.xml
