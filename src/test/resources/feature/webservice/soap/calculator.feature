@@ -1,5 +1,5 @@
 @all @webservice @SOAP
-  Feature: Get math results based on the input of calculator
+Feature: Get math results based on the input of calculator
 
   @calculator
   Scenario Outline: Send SOAP request to get the math results of calculator

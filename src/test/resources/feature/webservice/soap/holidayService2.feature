@@ -10,4 +10,3 @@ Feature: Test all 6 services that is available in HolidayService2
     Examples:
       | Version | Request               |
       | V1      | GetCountriesAvailable |
-      | V2      | GetHolidaysAvailable  |

@@ -7,6 +7,7 @@ import static cucumber.api.groovy.EN.Given
 import static cucumber.api.groovy.EN.Then
 import static cucumber.api.groovy.EN.When
 import static cucumber.api.groovy.Hooks.Before
+import static org.hamcrest.CoreMatchers.hasItems
 import static org.junit.Assert.assertThat
 import static org.hamcrest.CoreMatchers.is
 
@@ -33,7 +34,9 @@ When(~/^I send to the endpoint with (\w+) in SOAP (.+)$/) { name, version ->
 }
 
 Then(~/^I should get all the countries available$/) { ->
-    println response.text
-
     assertThat response.httpResponse.statusCode, is(200)
+    def countries = new XmlSlurper().parseText(response.text).'**'.findAll { node -> node.name() == 'Code' }*.text()
+
+    assertThat countries.size(), is(6)
+    assertThat countries, hasItems('Canada', 'Scotland', 'UnitedStates')
 }
