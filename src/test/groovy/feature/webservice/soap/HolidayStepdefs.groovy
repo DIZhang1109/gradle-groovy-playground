@@ -7,8 +7,8 @@ import static cucumber.api.groovy.EN.Given
 import static cucumber.api.groovy.EN.Then
 import static cucumber.api.groovy.EN.When
 import static cucumber.api.groovy.Hooks.Before
-import static org.junit.Assert.assertThat
 import static org.hamcrest.CoreMatchers.is
+import static org.junit.Assert.assertThat
 
 /**
  * Created by Di on 9/08/17.

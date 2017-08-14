@@ -7,13 +7,12 @@ import static cucumber.api.groovy.EN.Given
 import static cucumber.api.groovy.EN.Then
 import static cucumber.api.groovy.EN.When
 import static cucumber.api.groovy.Hooks.Before
-import static org.hamcrest.CoreMatchers.hasItems
+import static org.hamcrest.CoreMatchers.*
 import static org.junit.Assert.assertThat
-import static org.hamcrest.CoreMatchers.is
 
 /**
  * Created by zhangd on 11/08/2017.
- * holidayService2.feature step definitions
+ * holidayServiceGetCountries.feature step definitions
  */
 
 SoapService soapService

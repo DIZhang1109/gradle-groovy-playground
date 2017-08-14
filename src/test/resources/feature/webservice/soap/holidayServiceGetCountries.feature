@@ -1,5 +1,5 @@
 @all @webservice @SOAP
-Feature: Test all 6 services that is available in HolidayService2
+Feature: Test GetCountriesAvailable service is available in HolidayService2
 
   @holidayService2
   Scenario Outline: Get Countries Available
