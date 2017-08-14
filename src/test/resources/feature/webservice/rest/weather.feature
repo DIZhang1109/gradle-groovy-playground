@@ -10,3 +10,5 @@ Feature: Get weather results based on the input of location
     Examples:
       | City       | Min | Max |
       | Wellington | 0   | 20  |
+      | Shanghai   | 20  | 40  |
+      | Auckland   | 5   | 20  |
