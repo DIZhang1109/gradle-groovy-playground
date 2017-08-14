@@ -9,4 +9,4 @@ Feature: Get weather results based on the input of location
 
     Examples:
       | City       | Min | Max |
-      | Wellington | 0   | 30  |
+      | Wellington | 0   | 20  |
