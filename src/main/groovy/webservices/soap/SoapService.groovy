@@ -3,8 +3,11 @@ package webservices.soap
 import groovy.util.logging.Slf4j
 import org.yaml.snakeyaml.Yaml
 import wslite.soap.SOAPClient
+import wslite.soap.SOAPClientException
 import wslite.soap.SOAPResponse
 import wslite.soap.SOAPVersion
+
+import javax.xml.ws.soap.SOAPFaultException
 
 /**
  * Created by Di on 9/08/17.
@@ -37,12 +40,18 @@ class SoapService {
 
     SOAPResponse getUSHolidaySOAPV1Response(name, searchYear) {
         log.info "Send SOAP 1.1 request through $name and $searchYear, then return the response"
-        client.send(SOAPAction: "http://www.27seconds.com/Holidays/US/Dates/$name") {
-            body {
-                "$name"('xmlns': 'http://www.27seconds.com/Holidays/US/Dates/') {
-                    year(searchYear)
+        try {
+            client.send(SOAPAction: "http://www.27seconds.com/Holidays/US/Dates/$name") {
+                body {
+                    "$name"('xmlns': 'http://www.27seconds.com/Holidays/US/Dates/') {
+                        year(searchYear)
+                    }
                 }
             }
+        } catch (SOAPFaultException sfe) {
+            log.warn 'SOAP fault code: ' + sfe.message
+        } catch (SOAPClientException sce) {
+            log.warn 'HTTP Client error: ' + sce.message
         }
     }
 
@@ -85,9 +94,9 @@ class SoapService {
                     </soap12:Envelope>""")
     }
 
-    SOAPResponse    getHolidayService2Response(version, name) {
+    SOAPResponse getHolidayService2Response(version, name) {
         log.info "Send SOAP $version request through $name, then return the response"
         def path = System.getProperty('user.dir') + yaml.load(('src/test/config.yml' as File).text)."$name"
-        (version == 'V1')? client.send(new File(path).text) : client.send(SOAPVersion.V1_2, new File(path).text)
+        (version == 'V1') ? client.send(new File(path).text) : client.send(SOAPVersion.V1_2, new File(path).text)
     }
 }
