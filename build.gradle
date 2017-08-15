@@ -10,6 +10,7 @@ plugins {
     id 'idea'
     id 'groovy'
     id 'jacoco'
+    id 'codenarc'
 }
 
 ext {
@@ -84,6 +85,16 @@ task cucumberTest(type: Test) {
     // show standard out and standard error of the test JVM(s) on the console
     testLogging.showStandardStreams = true
 
+    // codenarc check for groovy test code
+    doLast {
+        codenarcTest.execute()
+    }
+
     // run task jacocoTestReport at the last
     finalizedBy jacocoTestReport
+}
+
+codenarcTest {
+    configFile file('src/test/codenarc.xml')
+    ignoreFailures true
 }

@@ -39,7 +39,7 @@ When(~/^I send to the endpoint with (\w+)$/) { city ->
     response = restService.getRealTimeWeatherRESTResponse(city)
 }
 
-Then(~/^I should know the weather of (.+) is between (\d+) and (\d+)$/) { city, int min, int max ->
+Then(~/^I should know the weather of (.+) is between (\d+)°C and (\d+)°C$/) { city, int min, int max ->
     def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
     WeatherStepdefsLog.log.info 'Response JSON: ' + jsonResponse
 
@@ -53,7 +53,7 @@ Then(~/^I should know the weather of (.+) is between (\d+) and (\d+)$/) { city, 
     } else if (status == 'ok') {
         def actualCity = jsonResponse.HeWeather5.basic.city.toString().replaceAll('\\[', '').replaceAll('\\]', '').capitalize()
         def actualTemp = jsonResponse.HeWeather5.now.tmp.toString().replaceAll('\\[', '').replaceAll('\\]', '').toInteger()
-        WeatherStepdefsLog.log.info 'Real time weather: ' + actualTemp
+        WeatherStepdefsLog.log.info "Real time weather: $actualTemp °C"
 
         assertThat response.statusCode, is(200)
         assertThat actualCity, is(city)
