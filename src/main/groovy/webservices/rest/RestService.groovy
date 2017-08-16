@@ -32,4 +32,9 @@ class RestService {
         log.info "Send REST Get request, then return the response"
         response = client.get()
     }
+
+    Response deleteLocalhostRESTResponse() {
+        log.info "Send REST Delete request, then return the response"
+        response = client.delete()
+    }
 }

@@ -34,16 +34,23 @@ Given(~/^I start a mock service on (\d+)$/) { int port ->
     mockService.startMockServer port
 }
 
-When(~/^I create a get stub of (.+) with (\d+) (.+) and (.+)$/) { name, int status, value, body ->
-    MockService.stubGetService name, status, value, body
+When(~/^I create a (.+) stub of (.+) with (\d+) (.*) and (.*)$/) { type, name, int status, value, body ->
+    MockService.stubGetService type, name, status, value, body
 }
 
-Then(~/^I call the service through (\d+) and (\w+)$/) { int port, name ->
+Then(~/^I (\w+) the service through (\d+) and (\w+)$/) { type, int port, name ->
     restService.initiateLocalhost port, name
-    response = restService.getLocalhostRESTResponse()
+    switch (type) {
+        case 'Get':
+            response = restService.getLocalhostRESTResponse()
+            break
+        case 'Delete':
+            response = restService.deleteLocalhostRESTResponse()
+            break
+    }
 }
 
-And(~/^I should get same (\d+) and (.+)$/) { int status, body ->
+And(~/^I should get same (\d+) and (.*)$/) { int status, body ->
     MockSampleStepdefsLog.log.info('Response status: ' + response.statusCode)
     MockSampleStepdefsLog.log.info('Response headers: ' + response.headers)
     MockSampleStepdefsLog.log.info('Response content: ' + response.contentAsString)
