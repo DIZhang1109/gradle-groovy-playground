@@ -45,7 +45,7 @@ dependencies {
     compile "com.github.groovy-wslite:groovy-wslite:$wsliteVersion"
 
     // Wiremock
-    testCompile "com.github.tomakehurst:wiremock:2.7.1"
+    compile "com.github.tomakehurst:wiremock:2.7.1"
 
     // Simple Log4j
     compile "org.slf4j:slf4j-api:$slf4jVersion"

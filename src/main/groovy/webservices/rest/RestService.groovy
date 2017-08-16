@@ -18,8 +18,18 @@ class RestService {
         client = new RESTClient('https://free-api.heweather.com/v5/now')
     }
 
+    void initiateLocalhost(port, name) {
+        log.info "Instantiate a new RESTClient of http:localhost:$port/$name"
+        client = new RESTClient("http://localhost:$port/$name")
+    }
+
     Response getRealTimeWeatherRESTResponse(city) {
-        log.info "Send REST request through $city, then return the response"
+        log.info "Send REST Get request through $city, then return the response"
         response = client.get(query: [city: "$city", key: 'dcfbc7bb58a34c85a0fd91c8d78c9da2', lang: 'en'])
+    }
+
+    Response getLocalhostRESTResponse() {
+        log.info "Send REST Get request, then return the response"
+        response = client.get()
     }
 }
