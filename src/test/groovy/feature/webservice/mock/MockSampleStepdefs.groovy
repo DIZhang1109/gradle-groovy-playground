@@ -35,7 +35,7 @@ Given(~/^I start a mock service on (\d+)$/) { int port ->
 }
 
 When(~/^I create a (.+) stub of (.+) with (\d+) (.*) and (.*)$/) { type, name, int status, value, body ->
-    MockService.stubGetService type, name, status, value, body
+    MockService.stubService type, name, status, value, body
 }
 
 Then(~/^I (\w+) the service through (\d+) and (\w+)$/) { type, int port, name ->
@@ -47,15 +47,23 @@ Then(~/^I (\w+) the service through (\d+) and (\w+)$/) { type, int port, name ->
         case 'Delete':
             response = restService.deleteLocalhostRESTResponse()
             break
+        case 'Post':
+            response = restService.postLocalhostRESTResponse()
+            break
+        case 'Put':
+            response = restService.putLocalhostRESTResponse()
+            break
     }
 }
 
 And(~/^I should get same (\d+) and (.*)$/) { int status, body ->
-    MockSampleStepdefsLog.log.info('Response status: ' + response.statusCode)
-    MockSampleStepdefsLog.log.info('Response headers: ' + response.headers)
-    MockSampleStepdefsLog.log.info('Response content: ' + response.contentAsString)
-    assertThat response.statusCode, is(status)
-    assertThat response.contentAsString, is(body)
+    if (response) {
+        MockSampleStepdefsLog.log.info('Response status: ' + response.statusCode)
+        MockSampleStepdefsLog.log.info('Response headers: ' + response.headers)
+        MockSampleStepdefsLog.log.info('Response content: ' + response.contentAsString)
+        assertThat response.statusCode, is(status)
+        assertThat response.contentAsString, is(body)
+    }
 }
 
 And(~/^I stop the mock service$/) { ->

@@ -1,6 +1,7 @@
 package webservices.rest
 
 import groovy.util.logging.Slf4j
+import wslite.http.HTTPClientException
 import wslite.rest.RESTClient
 import wslite.rest.Response
 
@@ -29,12 +30,38 @@ class RestService {
     }
 
     Response getLocalhostRESTResponse() {
-        log.info "Send REST Get request, then return the response"
-        response = client.get()
+        log.info 'Send REST Get request, then return the response'
+        try {
+            response = client.get()
+        } catch (HTTPClientException hce) {
+            log.warn "Exception: $hce"
+        }
     }
 
     Response deleteLocalhostRESTResponse() {
-        log.info "Send REST Delete request, then return the response"
-        response = client.delete()
+        log.info 'Send REST Delete request, then return the response'
+        try {
+            response = client.delete()
+        } catch (HTTPClientException hce) {
+            log.warn "Exception: $hce"
+        }
+    }
+
+    Response postLocalhostRESTResponse() {
+        log.info 'Send REST Post request, then return the response'
+        try {
+            response = client.post()
+        } catch (HTTPClientException hce) {
+            log.warn "Exception: $hce"
+        }
+    }
+
+    Response putLocalhostRESTResponse() {
+        log.info 'Send REST Put request, then return the response'
+        try {
+            response = client.put()
+        } catch (HTTPClientException hce) {
+            log.warn "Exception: $hce"
+        }
     }
 }

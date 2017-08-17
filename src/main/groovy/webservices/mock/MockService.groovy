@@ -5,10 +5,16 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import groovy.util.logging.Slf4j
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import static com.github.tomakehurst.wiremock.client.WireMock.badRequest
 import static com.github.tomakehurst.wiremock.client.WireMock.delete
+import static com.github.tomakehurst.wiremock.client.WireMock.forbidden
 import static com.github.tomakehurst.wiremock.client.WireMock.get
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat
+import static com.github.tomakehurst.wiremock.client.WireMock.noContent
 import static com.github.tomakehurst.wiremock.client.WireMock.ok
+import static com.github.tomakehurst.wiremock.client.WireMock.okXml
+import static com.github.tomakehurst.wiremock.client.WireMock.post
+import static com.github.tomakehurst.wiremock.client.WireMock.put
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 
@@ -29,8 +35,8 @@ class MockService {
         WireMock.reset()
     }
 
-    static void stubGetService(type, name, int status, value, body) {
-        log.info "Stub for a Get service with $name, $status, $value and $body"
+    static void stubService(type, name, int status, value, body) {
+        log.info "Stub for a $type service with $name, $status, $value and $body"
         switch (type) {
             case 'Get':
                 givenThat get(urlEqualTo("/$name"))
@@ -42,6 +48,14 @@ class MockService {
             case 'Delete':
                 givenThat delete(urlEqualTo("/$name"))
                         .willReturn(ok())
+                break
+            case 'Post':
+                givenThat post(urlEqualTo("/$name"))
+                        .willReturn(noContent())
+                break
+            case 'Put':
+                givenThat put(urlEqualTo("/$name"))
+                        .willReturn(forbidden())
         }
     }
 
