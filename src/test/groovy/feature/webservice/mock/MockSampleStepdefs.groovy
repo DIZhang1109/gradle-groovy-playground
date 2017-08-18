@@ -60,7 +60,7 @@ Then(~/^I (\w+) the service through (\d+) and (\w+)$/) { type, int port, name ->
 }
 
 And(~/^I should get same (\d+) and (.*)$/) { int status, body ->
-    def bodyFilePath = (body.length() > 0) ? System.getProperty('user.dir') + '/src/test/resources/__files' + yaml.load(('src/test/config.yml' as File).text).REST."$body" : ''
+    def bodyFilePath = (body.length() > 0) ? System.getProperty('user.dir') + '/src/test/resources/__files' + yaml.load(('src/test/config.yml' as File).text).MOCK."$body" : 'No'
     def bodyContent = (body.length() > 0) ? new File(bodyFilePath).text : ''
 
     if (response) {
