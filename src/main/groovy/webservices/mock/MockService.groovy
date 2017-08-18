@@ -7,14 +7,20 @@ import org.yaml.snakeyaml.Yaml
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import static com.github.tomakehurst.wiremock.client.WireMock.delete
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import static com.github.tomakehurst.wiremock.client.WireMock.forbidden
 import static com.github.tomakehurst.wiremock.client.WireMock.get
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent
 import static com.github.tomakehurst.wiremock.client.WireMock.ok
 import static com.github.tomakehurst.wiremock.client.WireMock.post
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor
 import static com.github.tomakehurst.wiremock.client.WireMock.put
+import static com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
+import static com.github.tomakehurst.wiremock.client.WireMock.verify
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 
 /**
@@ -50,6 +56,7 @@ class MockService {
                         .withStatus(status)
                         .withHeader('Content-Type', "$value")
                         .withBodyFile(bodyFilePath))
+                        .withBasicAuth('username', 'password')
                 break
             case 'Delete':
                 givenThat delete(urlEqualTo("/$name"))
@@ -63,6 +70,26 @@ class MockService {
                 givenThat put(urlEqualTo("/$name"))
                         .willReturn(forbidden())
                 break
+        }
+    }
+
+    static void verifyRequest(type, name, value) {
+        switch (type) {
+            case 'Get':
+                verify getRequestedFor(urlEqualTo("/$name"))
+                        .withHeader('Content-Type', equalTo(value))
+                break
+            case 'Delete':
+                verify deleteRequestedFor(urlEqualTo("/$name"))
+                        .withHeader('Content-Type', equalTo(value))
+                break
+            case 'Post':
+                verify postRequestedFor(urlEqualTo("/$name"))
+                        .withHeader('Content-Type', equalTo(value))
+                break
+            case 'Put':
+                verify putRequestedFor(urlEqualTo("/$name"))
+                        .withHeader('Content-Type', equalTo(value))
         }
     }
 

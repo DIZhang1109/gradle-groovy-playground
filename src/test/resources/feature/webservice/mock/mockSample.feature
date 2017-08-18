@@ -5,8 +5,8 @@ Feature: Sample feature of a Wiremock service
   Scenario Outline: Create mock service and verify it is up and working
     Given I start a mock service on <Port>
     When I create a <Type> stub of <Name> with <Status> <Value> and <Body>
-    Then I <Type> the service through <Port> and <Name>
-    And I should get same <Status> and <Body>
+    Then I <Type> the service through <Port> and <Name> <Value>
+    And I should <Type> same <Name> <Status> <Value> and <Body>
     And I stop the mock service
 
     Examples:

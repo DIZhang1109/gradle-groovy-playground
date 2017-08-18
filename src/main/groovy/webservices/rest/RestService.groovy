@@ -2,6 +2,7 @@ package webservices.rest
 
 import groovy.util.logging.Slf4j
 import wslite.http.HTTPClientException
+import wslite.http.auth.HTTPBasicAuthorization
 import wslite.rest.RESTClient
 import wslite.rest.Response
 
@@ -22,6 +23,7 @@ class RestService {
     void initiateLocalhost(port, name) {
         log.info "Instantiate a new RESTClient of http:localhost:$port/$name"
         client = new RESTClient("http://localhost:$port/$name")
+        client.authorization = new HTTPBasicAuthorization('username', 'password')
     }
 
     Response getRealTimeWeatherRESTResponse(city) {
@@ -29,37 +31,37 @@ class RestService {
         response = client.get(query: [city: "$city", key: 'dcfbc7bb58a34c85a0fd91c8d78c9da2', lang: 'en'])
     }
 
-    Response getLocalhostRESTResponse() {
+    Response getLocalhostRESTResponse(value) {
         log.info 'Send REST Get request, then return the response'
         try {
-            response = client.get()
+            response = client.get(headers: ['Content-Type': value])
         } catch (HTTPClientException hce) {
             log.warn "Exception: $hce"
         }
     }
 
-    Response deleteLocalhostRESTResponse() {
+    Response deleteLocalhostRESTResponse(value) {
         log.info 'Send REST Delete request, then return the response'
         try {
-            response = client.delete()
+            response = client.delete(headers: ['Content-Type': value])
         } catch (HTTPClientException hce) {
             log.warn "Exception: $hce"
         }
     }
 
-    Response postLocalhostRESTResponse() {
+    Response postLocalhostRESTResponse(value) {
         log.info 'Send REST Post request, then return the response'
         try {
-            response = client.post()
+            response = client.post(headers: ['Content-Type': value])
         } catch (HTTPClientException hce) {
             log.warn "Exception: $hce"
         }
     }
 
-    Response putLocalhostRESTResponse() {
+    Response putLocalhostRESTResponse(value) {
         log.info 'Send REST Put request, then return the response'
         try {
-            response = client.put()
+            response = client.put(headers: ['Content-Type': value])
         } catch (HTTPClientException hce) {
             log.warn "Exception: $hce"
         }

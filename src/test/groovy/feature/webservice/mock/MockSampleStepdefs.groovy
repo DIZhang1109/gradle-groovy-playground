@@ -41,32 +41,33 @@ When(~/^I create a (.+) stub of (.+) with (\d+) (.*) and (.*)$/) { type, name, i
     mockService.stubService type, name, status, value, body
 }
 
-Then(~/^I (\w+) the service through (\d+) and (\w+)$/) { type, int port, name ->
+Then(~/^I (\w+) the service through (\d+) and (\w+) (.*)$/) { type, int port, name, value ->
     restService.initiateLocalhost port, name
     switch (type) {
         case 'Get':
-            response = restService.getLocalhostRESTResponse()
+            response = restService.getLocalhostRESTResponse(value)
             break
         case 'Delete':
-            response = restService.deleteLocalhostRESTResponse()
+            response = restService.deleteLocalhostRESTResponse(value)
             break
         case 'Post':
-            response = restService.postLocalhostRESTResponse()
+            response = restService.postLocalhostRESTResponse(value)
             break
         case 'Put':
-            response = restService.putLocalhostRESTResponse()
+            response = restService.putLocalhostRESTResponse(value)
             break
     }
 }
 
-And(~/^I should get same (\d+) and (.*)$/) { int status, body ->
+And(~/^I should (.+) same (.+) (\d+) (.*) and (.*)$/) { type, name, int status, value, body ->
+    MockService.verifyRequest type, name, value
+
     def bodyFilePath = (body.length() > 0) ? System.getProperty('user.dir') + '/src/test/resources/__files' + yaml.load(('src/test/config.yml' as File).text).MOCK."$body" : 'No'
     def bodyContent = (body.length() > 0) ? new File(bodyFilePath).text : ''
-
     if (response) {
-        MockSampleStepdefsLog.log.info('Response status: ' + response.statusCode)
-        MockSampleStepdefsLog.log.info('Response headers: ' + response.headers)
-        MockSampleStepdefsLog.log.info('Response content: ' + response.contentAsString)
+        MockSampleStepdefsLog.log.info 'Response status: ' + response.statusCode
+        MockSampleStepdefsLog.log.info 'Response headers: ' + response.headers
+        MockSampleStepdefsLog.log.info 'Response content: ' + response.contentAsString
         assertThat response.statusCode, is(status)
         assertThat response.contentAsString, is(bodyContent)
     }
