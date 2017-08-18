@@ -96,7 +96,7 @@ class SoapService {
 
     SOAPResponse getHolidayService2Response(version, name) {
         log.info "Send SOAP $version request through $name, then return the response"
-        def path = System.getProperty('user.dir') + yaml.load(('src/test/config.yml' as File).text)."$name"
+        def path = System.getProperty('user.dir') + yaml.load(('src/test/config.yml' as File).text).SOAP."$name"
         (version == 'V1') ? client.send(new File(path).text) : client.send(SOAPVersion.V1_2, new File(path).text)
     }
 }
