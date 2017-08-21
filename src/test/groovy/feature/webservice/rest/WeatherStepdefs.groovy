@@ -1,5 +1,6 @@
 package feature.webservice.rest
 
+import cucumber.api.Scenario
 import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
 import webservices.rest.RestService
@@ -21,14 +22,16 @@ import static org.junit.Assert.fail
  * weather.feature step definitions
  */
 
+Scenario scenario
 RestService restService
 Response response
 
 @Slf4j
 class WeatherStepdefsLog {}
 
-Before() {
+Before() { Scenario s ->
     restService = new RestService()
+    scenario = s
 }
 
 Given(~/^I have a REST request of Weather$/) { ->
@@ -40,6 +43,7 @@ When(~/^I send to the endpoint with (\w+)$/) { city ->
 }
 
 Then(~/^I should know the weather of (.+) is between (\d+)°C and (\d+)°C$/) { city, int min, int max ->
+    scenario.write 'JSON Response:\n' + response.contentAsString
     def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
     WeatherStepdefsLog.log.info 'Response JSON: ' + jsonResponse
 

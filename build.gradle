@@ -96,11 +96,20 @@ task cucumberTest(type: Test) {
     // show standard out and standard error of the test JVM(s) on the console
     testLogging.showStandardStreams = true
 
-    // codenarc check for groovy test code
     doLast {
+        // codenarc check for groovy test code
         codenarcTest.execute()
+        wrapText.execute()
     }
 
     // run task jacocoTestReport at the last
     finalizedBy jacocoTestReport
+}
+
+task wrapText {
+    doLast {
+        def reportFilePath = "$buildDir/cucumber-reports/html-report/cucumber-results-agg-test-results.html"
+        def reportFile = new File(reportFilePath).text.replaceAll('font-family:courier;font-weight:normal;font-size:small;color:black;border:1px dashed black;background-color:silver', 'font-family:courier;font-weight:normal;font-size:small;color:black;border:1px dashed black;background-color:silver;white-space:pre-wrap;')
+        new File(reportFilePath).write(reportFile)
+    }
 }
