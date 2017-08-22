@@ -13,6 +13,7 @@ import static cucumber.api.groovy.EN.When
 import static cucumber.api.groovy.Hooks.Before
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
+import static org.junit.Assert.fail
 
 /**
  * Created by zhangd on 16/08/2017.
@@ -37,15 +38,18 @@ Given(~/^I start a mock service on (\d+)$/) { int port ->
     mockService.startMockServer port
 }
 
-When(~/^I create a (.+) stub of (.+) with (\d+) (.*) and (.*)$/) { type, name, int status, value, body ->
-    mockService.stubService type, name, status, value, body
+When(~/^I create a (.+) stub of (.+) with (\d+) (.*) (.*) and (.*)$/) { type, name, int status, value, params, body ->
+    mockService.stubService type, name, status, value, params, body
 }
 
-Then(~/^I (\w+) the service through (\d+) and (\w+) (.*)$/) { type, int port, name, value ->
+Then(~/^I (\w+) the service through (\d+) and (\w+) (.*) (.*)$/) { type, int port, name, value, params ->
     restService.initiateLocalhost port, name
     switch (type) {
         case 'Get':
-            response = restService.getLocalhostRESTResponse(value)
+            response = restService.getLocalhostRESTResponse(value, params)
+            if(!response) {
+                fail('No valid response return!!!')
+            }
             break
         case 'Delete':
             response = restService.deleteLocalhostRESTResponse(value)
@@ -59,8 +63,8 @@ Then(~/^I (\w+) the service through (\d+) and (\w+) (.*)$/) { type, int port, na
     }
 }
 
-And(~/^I should (.+) same (.+) (\d+) (.*) and (.*)$/) { type, name, int status, value, body ->
-    MockService.verifyRequest type, name, value
+And(~/^I should (.+) same (.+) (\d+) (.*) (.*) and (.*)$/) { type, name, int status, value, params, body ->
+    MockService.verifyRequest type, name, value, params
 
     def bodyFilePath = (body.length() > 0) ? System.getProperty('user.dir') + '/src/test/resources/__files' + yaml.load(('src/test/config.yml' as File).text).MOCK."$body" : 'No'
     def bodyContent = (body.length() > 0) ? new File(bodyFilePath).text : ''

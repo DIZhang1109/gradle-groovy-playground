@@ -2,6 +2,7 @@ package webservices.mock
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer
 import groovy.util.logging.Slf4j
 import org.yaml.snakeyaml.Yaml
 
@@ -38,25 +39,37 @@ class MockService {
 
     void startMockServer(int port) {
         log.info "Start a mock server on $port"
-        wireMockServer = new WireMockServer(wireMockConfig().port(port))
+        wireMockServer = new WireMockServer(wireMockConfig()
+                .port(port)
+                .extensions(new ResponseTemplateTransformer(false)))
         wireMockServer.start()
 
         WireMock.configureFor 'localhost', port
         WireMock.reset()
     }
 
-    void stubService(type, name, int status, value, body) {
+    void stubService(type, name, int status, value, params, body) {
         log.info "Stub for a $type service with $name, $status, $value and $body"
         def bodyFilePath = (body.length() > 0) ? yaml.load(('src/test/config.yml' as File).text).MOCK."$body" : ''
 
         switch (type) {
             case 'Get':
-                givenThat get(urlEqualTo("/$name"))
-                        .willReturn(aResponse()
-                        .withStatus(status)
-                        .withHeader('Content-Type', "$value")
-                        .withBodyFile(bodyFilePath))
-                        .withBasicAuth('username', 'password')
+                if (params) {
+                    givenThat get(urlEqualTo("/$name?first=$params"))
+                            .withBasicAuth('username', 'password')
+                            .willReturn(aResponse()
+                            .withStatus(status)
+                            .withHeader('Content-Type', "$value")
+                            .withBody("{{request.query.first}} World!")
+                            .withTransformers('response-template'))
+                } else {
+                    givenThat(get(urlEqualTo("/$name"))
+                            .withBasicAuth('username', 'password')
+                            .willReturn(aResponse()
+                            .withStatus(status)
+                            .withHeader('Content-Type', "$value")
+                            .withBodyFile(bodyFilePath)))
+                }
                 break
             case 'Delete':
                 givenThat delete(urlEqualTo("/$name"))
@@ -73,11 +86,17 @@ class MockService {
         }
     }
 
-    static void verifyRequest(type, name, value) {
+    static void verifyRequest(type, name, value, params) {
         switch (type) {
             case 'Get':
-                verify getRequestedFor(urlEqualTo("/$name"))
-                        .withHeader('Content-Type', equalTo(value))
+                if (params) {
+                    verify getRequestedFor(urlEqualTo("/$name?first=$params"))
+                            .withHeader('Content-Type', equalTo(value))
+                            .withQueryParam('first', equalTo(params))
+                } else {
+                    verify getRequestedFor(urlEqualTo("/$name"))
+                            .withHeader('Content-Type', equalTo(value))
+                }
                 break
             case 'Delete':
                 verify deleteRequestedFor(urlEqualTo("/$name"))

@@ -13,7 +13,6 @@ import wslite.rest.Response
 @Slf4j
 class RestService {
     RESTClient client
-    def response
 
     void initiateWeatherRESTClient() {
         log.info 'Instantiate a new RESTClient of Weather'
@@ -28,13 +27,17 @@ class RestService {
 
     Response getRealTimeWeatherRESTResponse(city) {
         log.info "Send REST Get request through $city, then return the response"
-        response = client.get(query: [city: "$city", key: 'dcfbc7bb58a34c85a0fd91c8d78c9da2', lang: 'en'])
+        client.get(query: [city: "$city", key: 'dcfbc7bb58a34c85a0fd91c8d78c9da2', lang: 'en'])
     }
 
-    Response getLocalhostRESTResponse(value) {
+    Response getLocalhostRESTResponse(value, params) {
         log.info 'Send REST Get request, then return the response'
         try {
-            response = client.get(headers: ['Content-Type': value])
+            if (params) {
+                client.get(headers: ['Content-Type': value], query: ['first': "$params"])
+            } else {
+                client.get(headers: ['Content-Type': value])
+            }
         } catch (HTTPClientException hce) {
             log.warn "Exception: $hce"
         }
@@ -43,7 +46,7 @@ class RestService {
     Response deleteLocalhostRESTResponse(value) {
         log.info 'Send REST Delete request, then return the response'
         try {
-            response = client.delete(headers: ['Content-Type': value])
+            client.delete(headers: ['Content-Type': value])
         } catch (HTTPClientException hce) {
             log.warn "Exception: $hce"
         }
@@ -52,7 +55,7 @@ class RestService {
     Response postLocalhostRESTResponse(value) {
         log.info 'Send REST Post request, then return the response'
         try {
-            response = client.post(headers: ['Content-Type': value])
+            client.post(headers: ['Content-Type': value])
         } catch (HTTPClientException hce) {
             log.warn "Exception: $hce"
         }
@@ -61,7 +64,7 @@ class RestService {
     Response putLocalhostRESTResponse(value) {
         log.info 'Send REST Put request, then return the response'
         try {
-            response = client.put(headers: ['Content-Type': value])
+            client.put(headers: ['Content-Type': value])
         } catch (HTTPClientException hce) {
             log.warn "Exception: $hce"
         }
