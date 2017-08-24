@@ -96,9 +96,10 @@ task cucumberTest(type: Test) {
     // show standard out and standard error of the test JVM(s) on the console
     testLogging.showStandardStreams = true
 
+    // Execute Codenarc, Cucumber Report Generation and Beautify
     doLast {
-        // codenarc check for groovy test code
         codenarcTest.execute()
+        cucumberReport.execute()
         wrapText.execute()
     }
 
@@ -106,6 +107,17 @@ task cucumberTest(type: Test) {
     finalizedBy jacocoTestReport
 }
 
+/**
+ * This is a Java execution task to create cucumber reports via executing groovy script
+ */
+task cucumberReport(dependsOn: 'classes', type: JavaExec) {
+    main = 'utility/ReportGeneration'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+/**
+ * This is a custom task to beautify XML in cucumber reports
+ */
 task wrapText {
     doLast {
         def reportFilePath = "$buildDir/cucumber-reports/html-report/cucumber-results-agg-test-results.html"
