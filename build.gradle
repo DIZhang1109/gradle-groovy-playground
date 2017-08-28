@@ -37,6 +37,7 @@ dependencies {
     // Cucumber, Cucumber JUnit and Cucumber Report
     compile "info.cukes:cucumber-groovy:$cucumberVersion"
     testCompile "info.cukes:cucumber-junit:$cucumberVersion"
+    compile "info.cukes:cucumber-picocontainer:$cucumberVersion"
     compile "com.github.mkolisnyk:cucumber-runner:$cucumberReportVersion"
 
     // Spock and JUnit

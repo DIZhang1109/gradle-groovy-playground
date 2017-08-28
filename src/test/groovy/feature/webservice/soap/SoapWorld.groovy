@@ -1,5 +1,6 @@
 package feature.webservice.soap
 
+import org.yaml.snakeyaml.Yaml
 import webservices.soap.SoapService
 
 import static cucumber.api.groovy.Hooks.World
@@ -10,5 +11,6 @@ import static cucumber.api.groovy.Hooks.World
  */
 
 World {
-    new SoapService()
+    Yaml yaml = new Yaml()
+    new SoapService(yaml)
 }

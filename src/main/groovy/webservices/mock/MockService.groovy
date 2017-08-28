@@ -31,6 +31,11 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 @Slf4j
 class MockService {
     WireMockServer wireMockServer
+    Yaml yaml
+
+    MockService(Yaml yaml) {
+        this.yaml = yaml
+    }
 
     void startMockServer(int port) {
         log.info "Start a mock server on $port"
@@ -45,7 +50,7 @@ class MockService {
 
     void stubService(type, name, int status, value, params, body) {
         log.info "Stub for a $type service with $name, $status, $value and $body"
-        def bodyFilePath = (body.length() > 0) ? new Yaml().load(('src/test/config.yml' as File).text).MOCK."$body" : ''
+        def bodyFilePath = (body.length() > 0) ? yaml.load(('src/test/config.yml' as File).text).MOCK."$body" : ''
 
         switch (type) {
             case 'Get':
