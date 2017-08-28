@@ -21,8 +21,8 @@ class SoapService {
     Yaml yaml
     def soapVersion
 
-    SoapService(Yaml yaml) {
-        this.yaml = yaml
+    SoapService() {
+        yaml = new Yaml()
     }
 
     void initiateUSHolidaySOAPClient() {

@@ -33,8 +33,8 @@ class MockService {
     WireMockServer wireMockServer
     Yaml yaml
 
-    MockService(Yaml yaml) {
-        this.yaml = yaml
+    MockService() {
+        yaml = new Yaml()
     }
 
     void startMockServer(int port) {
