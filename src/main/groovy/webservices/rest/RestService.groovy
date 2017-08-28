@@ -13,6 +13,7 @@ import wslite.rest.Response
 @Slf4j
 class RestService {
     RESTClient client
+    Response response
 
     void initiateWeatherRESTClient() {
         log.info 'Instantiate a new RESTClient of Weather'

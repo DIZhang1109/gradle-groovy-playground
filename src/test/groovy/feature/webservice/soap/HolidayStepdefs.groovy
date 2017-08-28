@@ -1,12 +1,8 @@
 package feature.webservice.soap
 
-import webservices.soap.SoapService
-import wslite.soap.SOAPResponse
-
 import static cucumber.api.groovy.EN.Given
 import static cucumber.api.groovy.EN.Then
 import static cucumber.api.groovy.EN.When
-import static cucumber.api.groovy.Hooks.Before
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
@@ -15,30 +11,22 @@ import static org.junit.Assert.assertThat
  * holiday.feature step definitions
  */
 
-SoapService soapService
-SOAPResponse response
-def soapVersion
-
-Before() {
-    soapService = new SoapService()
-}
-
 Given(~/^I have a SOAP (.+) request of US Holiday$/) { version ->
-    soapService.initiateUSHolidaySOAPClient()
+    initiateUSHolidaySOAPClient()
     soapVersion = version
 }
 
 When(~/^I send to the endpoint with (.+) and (\d+)$/) { holiday, searchYear ->
-    response = (soapVersion == 'V1') ? soapService.getUSHolidaySOAPV1Response(getHoliday(holiday), searchYear) : soapService.getUSHolidaySOAPV2Response(getHoliday(holiday), searchYear)
+    soapResponse = (soapVersion == 'V1') ? getUSHolidaySOAPV1Response(getHoliday(holiday), searchYear) : getUSHolidaySOAPV2Response(getHoliday(holiday), searchYear)
 }
 
 Then(~/^I should know (.+) of (\d+) is (.+)$/) { holiday, year, date ->
     def responseName = getHoliday(holiday) + 'Response'
     def responseResult = getHoliday(holiday) + 'Result'
 
-    assertThat response.httpResponse.statusCode, is(200)
-    assertThat response."$responseName"."$responseResult".text().take(4), is(year)
-    assertThat response."$responseName"."$responseResult".text()[5..9], is(date)
+    assertThat soapResponse.httpResponse.statusCode, is(200)
+    assertThat soapResponse."$responseName"."$responseResult".text().take(4), is(year)
+    assertThat soapResponse."$responseName"."$responseResult".text()[5..9], is(date)
 }
 
 /**

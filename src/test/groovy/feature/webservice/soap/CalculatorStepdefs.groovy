@@ -1,12 +1,8 @@
 package feature.webservice.soap
 
-import webservices.soap.SoapService
-import wslite.soap.SOAPResponse
-
 import static cucumber.api.groovy.EN.Given
 import static cucumber.api.groovy.EN.Then
 import static cucumber.api.groovy.EN.When
-import static cucumber.api.groovy.Hooks.Before
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 
@@ -15,27 +11,19 @@ import static org.junit.Assert.assertThat
  * calculator.feature step definitions
  */
 
-SoapService soapService
-SOAPResponse response
-def soapVersion
-
-Before() {
-    soapService = new SoapService()
-}
-
 Given(~/^I have a SOAP (.+) request of Calculator$/) { verison ->
-    soapService.initiateCalculatorSOAPClient()
+    initiateCalculatorSOAPClient()
     soapVersion = verison
 }
 
 When(~/^I (\w+) (\d+) by (\d+)$/) { action, digit1, digit2 ->
-    response = (soapVersion == 'V1') ? soapService.getCalculatorSOAPV1Response(action, digit1, digit2) : soapService.getCalculatorSOAPV2Response(action, digit1, digit2)
+    soapResponse = (soapVersion == 'V1') ? getCalculatorSOAPV1Response(action, digit1, digit2) : getCalculatorSOAPV2Response(action, digit1, digit2)
 }
 
 Then(~/^I should get (.+) result: (\d+)$/) { action, result ->
     def responseName = "${action}Response"
     def responseResult = "${action}Result"
 
-    assertThat response.httpResponse.statusCode, is(200)
-    assertThat response."$responseName"."$responseResult".text(), is(result)
+    assertThat soapResponse.httpResponse.statusCode, is(200)
+    assertThat soapResponse."$responseName"."$responseResult".text(), is(result)
 }

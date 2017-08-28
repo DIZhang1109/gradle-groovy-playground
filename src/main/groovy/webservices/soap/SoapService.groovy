@@ -17,7 +17,9 @@ import javax.xml.ws.soap.SOAPFaultException
 @Slf4j
 class SoapService {
     SOAPClient client
+    SOAPResponse soapResponse
     Yaml yaml
+    def soapVersion
 
     SoapService() {
         yaml = new Yaml()

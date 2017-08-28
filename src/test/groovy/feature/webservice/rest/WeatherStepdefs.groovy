@@ -3,8 +3,6 @@ package feature.webservice.rest
 import cucumber.api.Scenario
 import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
-import webservices.rest.RestService
-import wslite.rest.Response
 
 import static cucumber.api.groovy.EN.Given
 import static cucumber.api.groovy.EN.Then
@@ -23,23 +21,20 @@ import static org.junit.Assert.fail
  */
 
 Scenario scenario
-RestService restService
-Response response
 
 @Slf4j
 class WeatherStepdefsLog {}
 
 Before() { Scenario s ->
-    restService = new RestService()
     scenario = s
 }
 
 Given(~/^I have a REST request of Weather$/) { ->
-    restService.initiateWeatherRESTClient()
+    initiateWeatherRESTClient()
 }
 
 When(~/^I send to the endpoint with (\w+)$/) { city ->
-    response = restService.getRealTimeWeatherRESTResponse(city)
+    response = getRealTimeWeatherRESTResponse(city)
 }
 
 Then(~/^I should know the weather of (.+) is between (\d+)°C and (\d+)°C$/) { city, int min, int max ->
