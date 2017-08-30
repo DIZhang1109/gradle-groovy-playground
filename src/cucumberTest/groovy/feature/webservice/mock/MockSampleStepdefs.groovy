@@ -3,10 +3,7 @@ package feature.webservice.mock
 import groovy.util.logging.Slf4j
 import org.yaml.snakeyaml.Yaml
 
-import static cucumber.api.groovy.EN.And
-import static cucumber.api.groovy.EN.Given
-import static cucumber.api.groovy.EN.Then
-import static cucumber.api.groovy.EN.When
+import static cucumber.api.groovy.EN.*
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.Assert.assertThat
 import static org.junit.Assert.fail
@@ -32,7 +29,7 @@ Then(~/^I (\w+) the service through (\d+) and (\w+) (.*) (.*)$/) { type, int por
     switch (type) {
         case 'Get':
             response = getLocalhostRESTResponse(value, params)
-            if(!response) {
+            if (!response) {
                 fail('No valid response return!!!')
             }
             break
@@ -51,7 +48,7 @@ Then(~/^I (\w+) the service through (\d+) and (\w+) (.*) (.*)$/) { type, int por
 And(~/^I should (.+) same (.+) (\d+) (.*) (.*) and (.*)$/) { type, name, int status, value, params, body ->
     verifyRequest type, name, value, params
 
-    def bodyFilePath = (body.length() > 0) ? System.getProperty('user.dir') + '/src/test/resources/__files' + new Yaml().load(('src/test/config.yml' as File).text).MOCK."$body" : 'No'
+    def bodyFilePath = (body.length() > 0) ? System.getProperty('user.dir') + '/src/test/resources/__files' + new Yaml().load(('src/cucumberTest/resources/config.yml' as File).text).MOCK."$body" : 'No'
     def bodyContent = (body.length() > 0) ? new File(bodyFilePath).text : ''
     if (response) {
         MockSampleStepdefsLog.log.info 'Response status: ' + response.statusCode

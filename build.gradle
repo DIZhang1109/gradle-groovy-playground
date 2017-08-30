@@ -73,8 +73,26 @@ jacocoTestReport {
 }
 
 codenarcTest {
-    configFile file('src/test/codenarc.xml')
+    configFile file('src/test/resources/codenarc.xml')
     ignoreFailures true
+}
+
+sourceSets {
+    cucumberTest {
+        groovy {
+            srcDirs = ['src/cucumberTest/groovy']
+        }
+        resources {
+            srcDirs = ['src/cucumberTest/resources']
+        }
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+configurations {
+    cucumberTestCompile.extendsFrom testCompile
+    cucumberTestRunTime.extendsFrom testRunTime
 }
 
 /**
@@ -84,6 +102,10 @@ task cucumberTest(type: Test) {
     // in order to run test every time even if it is not updated
     dependsOn 'cleanTest'
 
+    // Setup test dir and classpath
+    testClassesDir = sourceSets.cucumberTest.output.classesDir
+    classpath = sourceSets.cucumberTest.runtimeClasspath
+
     // set a system property for the test JVM(s) - for cucumber options
     systemProperty 'cucumber.options', System.properties.getProperty('cucumber.options')
 
@@ -91,8 +113,8 @@ task cucumberTest(type: Test) {
     systemProperty 'org.slf4j.simpleLogger.showDateTime', 'true'
     systemProperty 'org.slf4j.simpleLogger.dateTimeFormat', 'yyyy-MM-dd\'T\'HH:mm:ss'
 
-    // include the entrance of JUnit test suite
-    include '**/RunCucumberTest.class'
+//    // include the entrance of JUnit test suite
+//    include '**/RunCucumberTest.class'
 
     // show standard out and standard error of the test JVM(s) on the console
     testLogging.showStandardStreams = true

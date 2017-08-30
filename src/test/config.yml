@@ -1,6 +1,0 @@
-SOAP:
-  GetCountriesAvailable: /src/test/resources/payload/webservice/soap/GetCountriesAvailable/request.xml
-MOCK:
-  greet: /greet/mock.txt
-  greetJSON: /greetJSON/mock.json
-  greetXML: /greetXML/mock.xml

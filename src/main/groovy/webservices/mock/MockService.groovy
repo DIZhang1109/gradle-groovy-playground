@@ -50,7 +50,7 @@ class MockService {
 
     void stubService(type, name, int status, value, params, body) {
         log.info "Stub for a $type service with $name, $status, $value and $body"
-        def bodyFilePath = (body.length() > 0) ? yaml.load(('src/test/config.yml' as File).text).MOCK."$body" : ''
+        def bodyFilePath = (body.length() > 0) ? yaml.load(('src/cucumberTest/resources/config.yml' as File).text).MOCK."$body" : ''
 
         switch (type) {
             case 'Get':
