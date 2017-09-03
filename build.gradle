@@ -14,6 +14,9 @@ plugins {
 }
 
 ext {
+    version = '1.0.0'
+    project.description = 'This gradle test automation project is built for quick start of api testing'
+
     groovyVersion = '2.4.6'
     cucumberVersion = '1.2.5'
     cucumberReportVersion = '1.0.11'
@@ -59,24 +62,6 @@ dependencies {
     compile "org.yaml:snakeyaml:$snakeyamlVersion"
 }
 
-jacoco {
-    toolVersion = '0.7.9'
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled = true
-        csv.enabled = true
-        html.destination "${buildDir}/jacoco"
-    }
-    executionData = files("$buildDir/jacoco/cucumberTest.exec")
-}
-
-codenarcTest {
-    configFile file('src/test/resources/codenarc.xml')
-    ignoreFailures true
-}
-
 sourceSets {
     cucumberTest {
         groovy {
@@ -98,10 +83,7 @@ configurations {
 /**
  * This is a personalized test task to run all the cucumber tests through JUnit test suite
  */
-task cucumberTest(type: Test) {
-    // in order to run test every time even if it is not updated
-    dependsOn 'cleanTest'
-
+task cucumberTest(type: Test, dependsOn: 'cleanTest') {
     // Setup test dir and classpath
     testClassesDir = sourceSets.cucumberTest.output.classesDir
     classpath = sourceSets.cucumberTest.runtimeClasspath
@@ -133,7 +115,7 @@ task cucumberTest(type: Test) {
 /**
  * This is a Java execution task to create cucumber reports via executing groovy script
  */
-task cucumberReport(dependsOn: 'classes', type: JavaExec) {
+task cucumberReport(type: JavaExec, dependsOn: 'classes') {
     main = 'utility/ReportGeneration'
     classpath = sourceSets.main.runtimeClasspath
 }
@@ -147,4 +129,22 @@ task wrapText {
         def reportFile = new File(reportFilePath).text.replaceAll('font-family:courier;font-weight:normal;font-size:small;color:black;border:1px dashed black;background-color:silver', 'font-family:courier;font-weight:normal;font-size:small;color:black;border:1px dashed black;background-color:silver;white-space:pre-wrap;')
         new File(reportFilePath).write(reportFile)
     }
+}
+
+jacoco {
+    toolVersion = '0.7.9'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        csv.enabled = true
+        html.destination "${buildDir}/jacoco"
+    }
+    executionData = files("$buildDir/jacoco/cucumberTest.exec")
+}
+
+codenarcTest {
+    configFile file('src/test/resources/codenarc.xml')
+    ignoreFailures true
 }
