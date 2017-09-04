@@ -1,5 +1,5 @@
 language: groovy
 
 script:
-#  - gradle cucumberTest -Dcucumber.options='--tags @all'
-  - gradle cucumberTest -Dcucumber.options='--tags ~@holiday --tags ~@holidayService2'
+  - gradlew cucumberTest -Dcucumber.options='--tags @all'
+#  - gradlew cucumberTest -Dcucumber.options='--tags ~@holiday --tags ~@holidayService2'
