@@ -17,7 +17,7 @@ ext {
     version = '1.0.0'
     project.description = 'This gradle test automation project is built for quick start of api testing'
 
-    groovyVersion = '2.4.6'
+    groovyVersion = '2.4.11'
     cucumberVersion = '1.2.5'
     cucumberReportVersion = '1.0.11'
     spockVersion = '1.0-groovy-2.4'
@@ -83,9 +83,11 @@ configurations {
 /**
  * This is a personalized test task to run all the cucumber tests through JUnit test suite
  */
-task cucumberTest(type: Test, dependsOn: 'cleanTest') {
+task cucumberTest(type: Test, dependsOn: cleanTest) {
+    outputs.upToDateWhen { false }
+
     // Setup test dir and classpath
-    testClassesDir = sourceSets.cucumberTest.output.classesDir
+    setTestClassesDirs(sourceSets.cucumberTest.output.classesDirs)
     classpath = sourceSets.cucumberTest.runtimeClasspath
 
     // set a system property for the test JVM(s) - for cucumber options
@@ -139,7 +141,7 @@ jacocoTestReport {
     reports {
         xml.enabled = true
         csv.enabled = true
-        html.destination "${buildDir}/jacoco"
+        html.destination file("${buildDir}/jacoco")
     }
     executionData = files("$buildDir/jacoco/cucumberTest.exec")
 }
