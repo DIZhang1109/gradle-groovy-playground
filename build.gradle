@@ -80,6 +80,8 @@ configurations {
     cucumberTestRunTime.extendsFrom testRunTime
 }
 
+defaultTasks 'cucumberTest'
+
 /**
  * This is a personalized test task to run all the cucumber tests through JUnit test suite
  */
@@ -87,7 +89,7 @@ task cucumberTest(type: Test, dependsOn: cleanTest) {
     outputs.upToDateWhen { false }
 
     // Setup test dir and classpath
-    setTestClassesDirs(sourceSets.cucumberTest.output.classesDirs)
+    setTestClassesDirs sourceSets.cucumberTest.output.classesDirs
     classpath = sourceSets.cucumberTest.runtimeClasspath
 
     // set a system property for the test JVM(s) - for cucumber options
@@ -105,7 +107,7 @@ task cucumberTest(type: Test, dependsOn: cleanTest) {
 
     // Execute Codenarc, Cucumber Report Generation and Beautify
     doLast {
-        codenarcTest.execute()
+        codenarcCucumberTest.execute()
         cucumberReport.execute()
         wrapText.execute()
     }
@@ -146,7 +148,7 @@ jacocoTestReport {
     executionData = files("$buildDir/jacoco/cucumberTest.exec")
 }
 
-codenarcTest {
-    configFile file('src/test/resources/codenarc.xml')
+codenarcCucumberTest {
+    configFile file('src/test/resources/codenarc.groovy')
     ignoreFailures true
 }
