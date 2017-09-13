@@ -9,14 +9,21 @@
 plugins {
     id 'idea'
     id 'groovy'
-    id 'jacoco'
     id 'codenarc'
 }
 
-ext {
-    version = '1.0.0'
-    project.description = 'This gradle test automation project is built for quick start of api testing'
+group = 'di.zhang'
+version = '1.0.0'
+description = 'This gradle test automation project is built for quick start of api testing'
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext {
     groovyVersion = '2.4.11'
     cucumberVersion = '1.2.5'
     cucumberReportVersion = '1.0.11'
@@ -29,10 +36,6 @@ ext {
     snakeyamlVersion = '1.18'
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     // Groovy
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
@@ -40,7 +43,6 @@ dependencies {
     // Cucumber, Cucumber JUnit and Cucumber Report
     compile "info.cukes:cucumber-groovy:$cucumberVersion"
     testCompile "info.cukes:cucumber-junit:$cucumberVersion"
-    compile "info.cukes:cucumber-picocontainer:$cucumberVersion"
     compile "com.github.mkolisnyk:cucumber-runner:$cucumberReportVersion"
 
     // Spock and JUnit
@@ -82,10 +84,10 @@ configurations {
 
 defaultTasks 'cucumberTest'
 
-/**
- * This is a personalized test task to run all the cucumber tests through JUnit test suite
- */
 task cucumberTest(type: Test, dependsOn: cleanTest) {
+    description 'Runs all cucumber tests through Cucumber JUnit'
+
+    // bypass up-to-date check to run tests every time
     outputs.upToDateWhen { false }
 
     // Setup test dir and classpath
@@ -99,35 +101,26 @@ task cucumberTest(type: Test, dependsOn: cleanTest) {
     systemProperty 'org.slf4j.simpleLogger.showDateTime', 'true'
     systemProperty 'org.slf4j.simpleLogger.dateTimeFormat', 'yyyy-MM-dd\'T\'HH:mm:ss'
 
-//    // include the entrance of JUnit test suite
-//    include '**/RunCucumberTest.class'
-
     // show standard out and standard error of the test JVM(s) on the console
     testLogging.showStandardStreams = true
 
-    // Execute Codenarc, Cucumber Report Generation and Beautify
-    doLast {
-        codenarcCucumberTest.execute()
-        cucumberReport.execute()
-        wrapText.execute()
-    }
+    // runs cucumber report
+    finalizedBy 'cucumberReport', 'wrapText'
 
-    // run task jacocoTestReport at the last
-    finalizedBy jacocoTestReport
+    // runs codenarc report
+    finalizedBy codenarcMain, codenarcTest, codenarcCucumberTest
 }
 
-/**
- * This is a Java execution task to create cucumber reports via executing groovy script
- */
 task cucumberReport(type: JavaExec, dependsOn: 'classes') {
+    description 'Executes groovy script to create customized cucumber reports'
+
     main = 'utility/ReportGeneration'
     classpath = sourceSets.main.runtimeClasspath
 }
 
-/**
- * This is a custom task to beautify XML in cucumber reports
- */
 task wrapText {
+    description 'Beautify XML in cucumber reports'
+
     doLast {
         def reportFilePath = "$buildDir/cucumber-reports/html-report/cucumber-results-agg-test-results.html"
         def reportFile = new File(reportFilePath).text.replaceAll('font-family:courier;font-weight:normal;font-size:small;color:black;border:1px dashed black;background-color:silver', 'font-family:courier;font-weight:normal;font-size:small;color:black;border:1px dashed black;background-color:silver;white-space:pre-wrap;')
@@ -135,17 +128,14 @@ task wrapText {
     }
 }
 
-jacoco {
-    toolVersion = '0.7.9'
+codenarcMain {
+    configFile file('src/test/resources/codenarc.groovy')
+    ignoreFailures true
 }
 
-jacocoTestReport {
-    reports {
-        xml.enabled = true
-        csv.enabled = true
-        html.destination file("${buildDir}/jacoco")
-    }
-    executionData = files("$buildDir/jacoco/cucumberTest.exec")
+codenarcTest {
+    configFile file('src/test/resources/codenarc.groovy')
+    ignoreFailures true
 }
 
 codenarcCucumberTest {
