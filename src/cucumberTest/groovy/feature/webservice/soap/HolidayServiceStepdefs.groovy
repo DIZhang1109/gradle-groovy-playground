@@ -1,6 +1,7 @@
 package feature.webservice.soap
 
 import cucumber.api.Scenario
+import groovy.xml.XmlUtil
 
 import static cucumber.api.groovy.EN.Given
 import static cucumber.api.groovy.EN.Then
@@ -31,7 +32,7 @@ When(~/^I send to the endpoint with (\w+) in SOAP (.+)$/) { name, version ->
 
 Then(~/^I should get all the countries available$/) { ->
     assertThat soapResponse.httpResponse.statusCode, is(200)
-    scenario.write 'SOAP Response:\n' + soapResponse.httpResponse.contentAsString
+    scenario.write XmlUtil.serialize(soapResponse.text)
 
     def countries = new XmlSlurper().parseText(soapResponse.text).'**'.findAll { node -> node.name() == 'Code' }*.text()
     assertThat countries.size(), is(6)

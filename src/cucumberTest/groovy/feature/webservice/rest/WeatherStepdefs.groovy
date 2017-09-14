@@ -1,6 +1,7 @@
 package feature.webservice.rest
 
 import cucumber.api.Scenario
+import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
 
@@ -38,7 +39,7 @@ When(~/^I send to the endpoint with (\w+)$/) { city ->
 }
 
 Then(~/^I should know the weather of (.+) is between (\d+)°C and (\d+)°C$/) { city, int min, int max ->
-    scenario.write 'JSON Response:\n' + response.contentAsString
+    scenario.write 'JSON Response:\n' + JsonOutput.prettyPrint(response.contentAsString)
     def jsonResponse = new JsonSlurper().parseText(response.contentAsString)
     WeatherStepdefsLog.log.info 'Response JSON: ' + jsonResponse
 

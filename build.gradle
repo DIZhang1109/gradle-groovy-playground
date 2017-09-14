@@ -105,27 +105,17 @@ task cucumberTest(type: Test, dependsOn: cleanTest) {
     testLogging.showStandardStreams = true
 
     // runs cucumber report
-    finalizedBy 'cucumberReport', 'wrapText'
+    finalizedBy 'cucumberReport'
 
     // runs codenarc report
-    finalizedBy codenarcMain, codenarcTest, codenarcCucumberTest
+//    finalizedBy codenarcMain, codenarcTest, codenarcCucumberTest
 }
 
-task cucumberReport(type: JavaExec, dependsOn: 'classes') {
+task cucumberReport(type: JavaExec) {
     description 'Executes groovy script to create customized cucumber reports'
 
     main = 'utility/ReportGeneration'
     classpath = sourceSets.main.runtimeClasspath
-}
-
-task wrapText {
-    description 'Beautify XML in cucumber reports'
-
-    doLast {
-        def reportFilePath = "$buildDir/cucumber-reports/html-report/cucumber-results-agg-test-results.html"
-        def reportFile = new File(reportFilePath).text.replaceAll('font-family:courier;font-weight:normal;font-size:small;color:black;border:1px dashed black;background-color:silver', 'font-family:courier;font-weight:normal;font-size:small;color:black;border:1px dashed black;background-color:silver;white-space:pre-wrap;')
-        new File(reportFilePath).write(reportFile)
-    }
 }
 
 codenarcMain {
