@@ -13,9 +13,6 @@ import static org.junit.Assert.fail
  * mockSample.feature step definitions
  */
 
-@Slf4j
-class MockSampleStepdefsLog {}
-
 Given(~/^I start a mock service on (\d+)$/) { int port ->
     startMockServer port
 }
@@ -51,9 +48,9 @@ And(~/^I should (.+) same (.+) (\d+) (.*) (.*) and (.*)$/) { type, name, int sta
     def bodyFilePath = (body.length() > 0) ? System.getProperty('user.dir') + '/src/test/resources/__files' + new Yaml().load(('src/cucumberTest/resources/config.yml' as File).text).MOCK."$body" : 'No'
     def bodyContent = (body.length() > 0) ? new File(bodyFilePath).text : ''
     if (response) {
-        MockSampleStepdefsLog.log.info 'Response status: ' + response.statusCode
-        MockSampleStepdefsLog.log.info 'Response headers: ' + response.headers
-        MockSampleStepdefsLog.log.info 'Response content: ' + response.contentAsString
+        println 'Response status: ' + response.statusCode
+        println 'Response headers: ' + response.headers
+        println 'Response content: ' + response.contentAsString
         assertThat response.statusCode, is(status)
         assertThat response.contentAsString, is(bodyContent)
     }

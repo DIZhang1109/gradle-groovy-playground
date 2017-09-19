@@ -2,6 +2,7 @@ package feature.webservice.soap
 
 import cucumber.api.Scenario
 import groovy.xml.XmlUtil
+import utility.ScenarioService
 
 import static cucumber.api.groovy.EN.Given
 import static cucumber.api.groovy.EN.Then
@@ -14,8 +15,6 @@ import static org.junit.Assert.assertThat
  * Created by zhangd on 11/08/2017.
  * holidayServiceGetCountries.feature step definitions
  */
-
-Scenario scenario
 
 Before() { Scenario s ->
     scenario = s

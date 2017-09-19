@@ -21,8 +21,6 @@ import static org.junit.Assert.fail
  * weather.feature step definitions
  */
 
-Scenario scenario
-
 @Slf4j
 class WeatherStepdefsLog {}
 
