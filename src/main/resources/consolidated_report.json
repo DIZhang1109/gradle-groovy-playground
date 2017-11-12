@@ -1,0 +1,28 @@
+{
+  "@type": "com.github.mkolisnyk.cucumber.reporting.types.consolidated.ConsolidatedReportBatch",
+  "models": [
+    {
+      "items": [
+        {
+          "path": "build/cucumber-reports/html-report/cucumber-feature-overview-chart.html",
+          "title": "Feature Overview Chart"
+        },
+        {
+          "path": "build/cucumber-reports/html-report/cucumber-feature-overview.html",
+          "title": "Feature Overview"
+        },
+        {
+          "path": "build/cucumber-reports/html-report/cucumber-test-results.html",
+          "title": "Detailed Result"
+        },
+        {
+          "path": "build/cucumber-reports/html-report/cucumber-usage.html",
+          "title": "Usage Report"
+        }
+      ],
+      "reportSuffix": "consolidated-report",
+      "title": "Overall Results",
+      "useTableOfContents": true
+    }
+  ]
+}

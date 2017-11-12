@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-                  xmlns:hol="http://www.holidaywebservice.com/HolidayService_v2/">
-    <soapenv:Header/>
-    <soapenv:Body>
-        <hol:GetCountriesAvailable/>
-    </soapenv:Body>
-</soapenv:Envelope>

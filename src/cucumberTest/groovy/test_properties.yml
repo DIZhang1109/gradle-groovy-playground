@@ -1,0 +1,16 @@
+# Endpoint
+SOAP:
+  USHolidayDates: http://www.holidaywebservice.com/Holidays/US/Dates/USHolidayDates.asmx
+  Calculator: http://www.dneonline.com/calculator.asmx
+REST:
+  Weather: https://free-api.heweather.com/v5/now
+  Currency: http://api.fixer.io/latest
+  Mock: http://localhost:8089/mock
+SFTP:
+  Sample: test.rebex.net
+
+# Payload - Mock restResponse
+MOCK:
+  greet: /greet/mock.txt
+  greetJSON: /greetJSON/mock.json
+  greetXML: /greetXML/mock.xml

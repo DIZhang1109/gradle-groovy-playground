@@ -1,31 +1,75 @@
 package utility
 
+import com.github.mkolisnyk.cucumber.reporting.CucumberConsolidatedReport
+import com.github.mkolisnyk.cucumber.reporting.CucumberCoverageOverview
 import com.github.mkolisnyk.cucumber.reporting.CucumberDetailedResults
 import com.github.mkolisnyk.cucumber.reporting.CucumberFeatureOverview
 import com.github.mkolisnyk.cucumber.reporting.CucumberResultsOverview
+import com.github.mkolisnyk.cucumber.reporting.CucumberSystemInfo
+import com.github.mkolisnyk.cucumber.reporting.CucumberUsageReporting
 
 /**
  * Created by zhangd on 24/08/2017.
- * This groovy script is used to create and beautify various cucumber reports
+ * This groovy script is used to create various cucumber reports
  */
-CucumberResultsOverview cucumberResultsOverview = new CucumberResultsOverview()
-cucumberResultsOverview.setSourceFile 'build/cucumber-reports/json-report/cucumber.json'
-cucumberResultsOverview.setOutputName 'cucumber-results'
-cucumberResultsOverview.setOutputDirectory 'build/cucumber-reports/html-report/'
-cucumberResultsOverview.execute(true)
+String outputDir = 'build/cucumber-reports/html-report/'
+String outputName = 'cucumber'
+String soureFilePath = 'build/cucumber-reports/json-report/cucumber.json'
+String jsonUsageFilePath = 'build/cucumber-reports/json-report/cucumber-usage.json'
 
-CucumberDetailedResults cucumberDetailedResults = new CucumberDetailedResults()
-cucumberDetailedResults.setSourceFile 'build/cucumber-reports/json-report/cucumber.json'
-cucumberDetailedResults.setOutputName 'cucumber-results'
-cucumberDetailedResults.setOutputDirectory 'build/cucumber-reports/html-report/'
-cucumberDetailedResults.execute(true)
+new CucumberResultsOverview().with {
+    setOutputDirectory outputDir
+    setOutputName outputName
+    setSourceFile soureFilePath
+    execute()
+}
 
-CucumberFeatureOverview cucumberFeatureOverview = new CucumberFeatureOverview()
-cucumberFeatureOverview.setSourceFile 'build/cucumber-reports/json-report/cucumber.json'
-cucumberFeatureOverview.setOutputName 'cucumber-results'
-cucumberFeatureOverview.setOutputDirectory 'build/cucumber-reports/html-report/'
-cucumberFeatureOverview.execute(true)
+new CucumberDetailedResults().with {
+    setOutputDirectory outputDir
+    setOutputName outputName
+    setSourceFile soureFilePath
+    execute()
+}
 
-def reportFilePath = System.getProperty('user.dir') + '/build/cucumber-reports/html-report/cucumber-results-agg-test-results.html'
-def reportFile = new File(reportFilePath).text.replaceAll('</head>', '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><script>\\$(document).ready(function(){\\$(".tip").each(function(n){\\$(this).click(function(n){\\$(this).next().toggle("show")})}),\\$("pre.comment").css("display","none")});</script></head>')
-new File(reportFilePath).write(reportFile)
+new CucumberCoverageOverview().with {
+    setOutputDirectory outputDir
+    setOutputName outputName
+    setSourceFile soureFilePath
+    execute()
+}
+
+new CucumberFeatureOverview().with {
+    setOutputDirectory outputDir
+    setOutputName outputName
+    setSourceFile soureFilePath
+    execute()
+}
+
+new CucumberUsageReporting().with {
+    setOutputDirectory outputDir
+    setOutputName outputName
+    setJsonUsageFile jsonUsageFilePath
+    execute()
+}
+
+new CucumberSystemInfo().with {
+    setOutputDirectory outputDir
+    setOutputName outputName
+    execute()
+}
+
+new CucumberConsolidatedReport().with {
+    setOutputDirectory outputDir
+    setOutputName outputName
+    setPdfPageSize 'A4 landscape'
+    setSourceFile soureFilePath
+    execute(new File('./src/main/resources/consolidated_report.json'), 'html')
+}
+
+static beautifyCucumberReport(String path) {
+    def reportFile = new File(path).text.replaceAll('</head>', '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><script>\\$(document).ready(function(){\\$(".tip").each(function(n){\\$(this).click(function(n){\\$(this).next().toggle("show")})}),\\$("pre.comment").css("display","none")});</script></head>').replaceAll('<br>', '')
+    new File(path).write(reportFile)
+}
+
+beautifyCucumberReport(System.getProperty('user.dir') + '/' + outputDir + '/cucumber-test-results.html')
+beautifyCucumberReport(System.getProperty('user.dir') + '/' + outputDir + '/cucumber-consolidated-report.html')
