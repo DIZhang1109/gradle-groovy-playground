@@ -7,6 +7,7 @@ import org.apache.ws.security.WSSConfig
 import org.apache.ws.security.WSSecurityException
 import org.apache.ws.security.components.crypto.Merlin
 import org.apache.ws.security.message.DOMCallbackLookup
+import org.apache.ws.security.message.WSSecEncrypt
 import org.apache.ws.security.message.WSSecHeader
 import org.apache.ws.security.message.WSSecSignature
 import org.apache.ws.security.message.WSSecTimestamp
@@ -58,7 +59,7 @@ class WsSecurityService {
 
         wssEntries.each {
             if (it.getType() == WssEntry.Type.Encryption) {
-                log.info 'Encryption'
+                generateEncryptionToken secHeader, doc, it as Encryption
             } else if (it.getType() == WssEntry.Type.SAML) {
                 log.info 'SAML'
             } else if (it.getType() == WssEntry.Type.Signature) {
@@ -71,6 +72,22 @@ class WsSecurityService {
         }
 
         actualRequestXml = XmlUtil.serialize(docToString(doc))
+    }
+
+    static void generateEncryptionToken(WSSecHeader secHeader, Document doc, Encryption encryption) {
+        Merlin crypto = createCrypto(encryption.keystoreFilePath, encryption.password)
+
+        WSSecEncrypt builder = new WSSecEncrypt()
+        builder.setUserInfo encryption.alias
+        builder.setKeyIdentifierType encryption.keyIdentifierType
+        builder.setEmbeddedKeyName encryption.embeddedKeyname
+        (!encryption.embeddedKeyname && !encryption.embeddedKeyPassword) ?: builder.setKey(crypto.getPrivateKey(encryption.embeddedKeyname, encryption.embeddedKeyPassword).getEncoded())
+        builder.setSymmetricEncAlgorithm encryption.symmetricEncodingAlgorithm
+        builder.setKeyEnc encryption.keyEncryptionAlgorithm
+        builder.setEncryptSymmKey encryption.createEncryptedKey
+        builder.setParts encryption.parts
+
+        builder.build doc, crypto, secHeader
     }
 
     static void generateSignatureToken(WSSecHeader secHeader, Document doc, Signature signature) {

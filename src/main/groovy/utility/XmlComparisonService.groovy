@@ -22,7 +22,18 @@ class XmlComparisonService {
     static void compareXml(String type, String actualXml, String expectedXml) {
         Diff diff = null
 
-        if (type == 'Signature') {
+        if (type == 'Encryption') {
+            diff = DiffBuilder.compare(expectedXml)
+                    .withTest(actualXml)
+                    .checkForSimilar()
+                    .ignoreComments()
+                    .ignoreWhitespace()
+                    .normalizeWhitespace()
+                    .withDifferenceEvaluator(DifferenceEvaluators.chain(new IgnoreAttributeDifferenceEvaluator('wsu:Id'),
+                    new IgnoreAttributeDifferenceEvaluator('Id'), new IgnoreAttributeDifferenceEvaluator('URI'),
+                    new IgnoreElementDifferenceEvaluator('xenc:CipherValue')))
+                    .build()
+        } else if (type == 'Signature') {
             diff = DiffBuilder.compare(expectedXml)
                     .withTest(actualXml)
                     .checkForSimilar()

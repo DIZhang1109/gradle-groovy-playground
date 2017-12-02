@@ -1,6 +1,7 @@
 package stepdefs.wssecurity
 
 import org.apache.ws.security.WSConstants
+import wssecurity.Encryption
 import wssecurity.Signature
 import wssecurity.Timestamp
 import wssecurity.Username
@@ -13,35 +14,51 @@ import static cucumber.api.groovy.EN.*
  * wsSecuritySample.feature step definitions
  */
 
+Encryption encryption
 Signature signature
 Timestamp timestamp
-Username username
+Username usernameToken
 
 Given(~/^a SOAP request to be signed$/) { ->
+    encryption = new Encryption()
+    encryption.with {
+        keystoreFilePath = 'src/cucumberTest/resources/payload/wssecurity/encryption/wss40.jks'
+        alias = 'wss40'
+        password = 'security'
+        keyIdentifierType = WSConstants.BST_DIRECT_REFERENCE
+        symmetricEncodingAlgorithm = WSConstants.TRIPLE_DES
+        keyEncryptionAlgorithm = WSConstants.KEYTRANSPORT_RSAOEP
+        createEncryptedKey = true
+    }
+
     signature = new Signature()
-    signature.keystoreFilePath = 'src/cucumberTest/resources/payload/wssecurity/signature/wss40.jks'
-    signature.alias = 'wss40'
-    signature.password = 'security'
-    signature.keyIdentifierType = WSConstants.BST_DIRECT_REFERENCE
-    signature.signatureAlgorithm = WSConstants.RSA_SHA1
-    signature.signatureCanonicalization = WSConstants.C14N_EXCL_OMIT_COMMENTS
-    signature.digestAlgorithm = WSConstants.SHA1
-    signature.useSingleCertificate = true
+    signature.with {
+        keystoreFilePath = 'src/cucumberTest/resources/payload/wssecurity/signature/wss40.jks'
+        alias = 'wss40'
+        password = 'security'
+        keyIdentifierType = WSConstants.BST_DIRECT_REFERENCE
+        signatureAlgorithm = WSConstants.RSA_SHA1
+        signatureCanonicalization = WSConstants.C14N_EXCL_OMIT_COMMENTS
+        digestAlgorithm = WSConstants.SHA1
+        useSingleCertificate = true
+    }
 
     timestamp = new Timestamp()
     timestamp.timeToLive = 60000
 
-    username = new Username()
-    username.username = 'wernerd'
-    username.password = 'verySecret'
-    username.passwordType = WSConstants.PASSWORD_TEXT
+    usernameToken = new Username()
+    usernameToken.with {
+        username = 'wernerd'
+        password = 'verySecret'
+        passwordType = WSConstants.PASSWORD_TEXT
+    }
 }
 
 Then(~/^I apply security header (\w+) to it$/) { String type ->
     ArrayList<WssEntry> wssEntries = []
 
     if (type == 'Encryption') {
-        println 'Encryption not implemented yet'
+        wssEntries.add encryption
     } else if (type == 'SAML') {
         println 'SAML not implemented yet'
     } else if (type == 'Signature') {
@@ -49,7 +66,7 @@ Then(~/^I apply security header (\w+) to it$/) { String type ->
     } else if (type == 'Timestamp') {
         wssEntries.add timestamp
     } else if (type == 'Username') {
-        wssEntries.add username
+        wssEntries.add usernameToken
     }
 
     generateSecurityHeader type, wssEntries

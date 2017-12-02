@@ -11,7 +11,8 @@ Feature:
     Then I should get a signed <Type> SOAP request
 
     Examples:
-      | Type      |
-      | Signature |
-      | Timestamp |
-      | Username  |
+      | Type       |
+      | Encryption |
+      | Signature  |
+      | Timestamp  |
+      | Username   |
