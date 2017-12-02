@@ -35,7 +35,7 @@ class WsSecurityService {
      * @return
      */
     Document toSOAPPart(String type) {
-        String requestFilePath = "src/cucumberTest/resources/payload/wssecurity/$type/request.xml"
+        String requestFilePath = "src/cucumberTest/resources/payload/wssecurity/${type.uncapitalize()}/request.xml"
         expectedRequestXml = new File(requestFilePath.replaceAll('request', 'expectedRequest')).text
         InputStream inputStream = new ByteArrayInputStream(new File(requestFilePath).text.getBytes())
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance()
