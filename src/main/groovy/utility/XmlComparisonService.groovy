@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat
 class XmlComparisonService {
 
     static void compareXml(String type, String actualXml, String expectedXml) {
-        Diff diff
+        Diff diff = null
 
         if (type == 'Signature') {
             diff = DiffBuilder.compare(expectedXml)

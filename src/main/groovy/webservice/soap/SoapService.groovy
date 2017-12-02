@@ -26,7 +26,7 @@ class SoapService implements EndpointService {
 
     String getPayload(String service, Map binding) {
         def templateEngine = new SimpleTemplateEngine()
-        def payloadPath = "src/cucumberTest/resources/payload/webservice/soap/$service/request.xml"
+        String payloadPath = "src/cucumberTest/resources/payload/webservice/soap/$service/request.xml"
         soapRequest = templateEngine.createTemplate(new File(payloadPath).text).make(binding).toString()
     }
 

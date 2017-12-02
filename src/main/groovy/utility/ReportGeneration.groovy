@@ -71,5 +71,5 @@ static beautifyCucumberReport(String path) {
     new File(path).write(reportFile)
 }
 
-beautifyCucumberReport(System.getProperty('user.dir') + '/' + outputDir + '/cucumber-test-results.html')
-beautifyCucumberReport(System.getProperty('user.dir') + '/' + outputDir + '/cucumber-consolidated-report.html')
+beautifyCucumberReport System.getProperty('user.dir') + "/$outputDir/cucumber-test-results.html"
+beautifyCucumberReport System.getProperty('user.dir') + "/$outputDir/cucumber-consolidated-report.html"

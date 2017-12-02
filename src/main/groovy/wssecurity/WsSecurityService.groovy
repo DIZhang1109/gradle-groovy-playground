@@ -2,18 +2,24 @@ package wssecurity
 
 import groovy.util.logging.Slf4j
 import groovy.xml.XmlUtil
+import org.apache.ws.security.WSConstants
 import org.apache.ws.security.WSSConfig
+import org.apache.ws.security.WSSecurityException
 import org.apache.ws.security.components.crypto.Merlin
+import org.apache.ws.security.message.DOMCallbackLookup
 import org.apache.ws.security.message.WSSecHeader
 import org.apache.ws.security.message.WSSecSignature
 import org.apache.ws.security.message.WSSecTimestamp
 import org.apache.ws.security.message.WSSecUsernameToken
 import org.w3c.dom.Document
+import org.w3c.dom.Element
 
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.Transformer
+import javax.xml.transform.TransformerException
 import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMResult
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 import java.nio.charset.StandardCharsets
@@ -79,6 +85,7 @@ class WsSecurityService {
         builder.setUseSingleCertificate signature.useSingleCertificate
         builder.setParts signature.parts
 
+        builder.setCallbackLookup(new BinarySecurityTokenDOMCallbackLookup(doc, builder))
         builder.build doc, crypto, secHeader
     }
 
@@ -121,5 +128,42 @@ class WsSecurityService {
         Transformer transformer = transFactory.newTransformer()
         transformer.transform source, result
         new String(baos.toByteArray(), StandardCharsets.UTF_8)
+    }
+
+    /**
+     * This class is copied from SoapUI source code implementation, mainly for the encryption part is BinarySecurityToken
+     *
+     * This callback class extends the default DOMCallbackLookup class with a hook to return the prepared
+     * wsse:BinarySecurityToken
+     */
+    private static class BinarySecurityTokenDOMCallbackLookup extends DOMCallbackLookup {
+        private final WSSecSignature wssSign
+
+        BinarySecurityTokenDOMCallbackLookup(Document doc, WSSecSignature wssSign) {
+            super(doc)
+            this.wssSign = wssSign
+        }
+
+        @Override
+        List<Element> getElements(String localname, String namespace) throws WSSecurityException {
+            List<Element> elements = super.getElements(localname, namespace)
+            if (elements.isEmpty()) {
+                // element was not found in DOM document
+                if (WSConstants.BINARY_TOKEN_LN == localname && WSConstants.WSSE_NS == namespace) {
+                    /* In case the element searched for is the wsse:BinarySecurityToken, return the element prepared by
+                     wsee4j. If we return the original DOM element, the digest calculation fails because the element
+                     is not yet attached to the DOM tree, so instead return a copy which includes all namespaces */
+                    try {
+                        DOMResult result = new DOMResult()
+                        Transformer transformer = TransformerFactory.newInstance().newTransformer()
+                        transformer.transform(new DOMSource(wssSign.getBinarySecurityTokenElement()), result)
+                        return Collections.singletonList(((Document) result.getNode()).getDocumentElement())
+                    } catch (TransformerException e) {
+                        log.warn e.message
+                    }
+                }
+            }
+            return elements
+        }
     }
 }
