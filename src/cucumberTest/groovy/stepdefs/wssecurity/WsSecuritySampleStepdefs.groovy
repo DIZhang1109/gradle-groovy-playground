@@ -52,10 +52,10 @@ Then(~/^I apply security header (\w+) to it$/) { String type ->
         wssEntries.add username
     }
 
-    generateSecurityHeader(type, wssEntries)
+    generateSecurityHeader type, wssEntries
 }
 
 And(~/^I should get a signed (\w+) SOAP request$/) { String type ->
-    writePlainText 'Actual request xml:\n' + actualRequestXml
-    compareXml(type, actualRequestXml, expectedRequestXml)
+    writePlainText "Actual request xml:\n$actualRequestXml"
+    compareXml type, actualRequestXml, expectedRequestXml
 }
