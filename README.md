@@ -2,21 +2,21 @@
 
 ![Build Status](https://travis-ci.org/DIZhang1109/gradle-groovy-playground.svg?branch=master)
 
-This is a webservice test automation framework built based on Gradle and Groovy.
+This is a test automation framework built based on Gradle and Groovy.
 
 ## Dependency
 
-* Gradle - Build tool
-* Groovy - Programming lang
-* Cucumber - BDD tool
-* Cucumber Pico - Dependency Injection (As I use Groovy, this library is not actually useful here)
-* Cucumber Report - Beautiful Cucumber report
-* JUnit - Main test tool
-* Hamcrest
-* wslite - Web Service tool
-* Wiremock - Mock and Stub
+* gradle - Build tool
+* groovy - Programming language
+* cucumber - BDD tool
+* junit/hamcrest - Test framework
+* groovy-wslite - Web service
+* wiremock - Mock and stub
+* jsch - SFTP
+* wss4j - Web service security for java
+* geb - Groovy web automation
 * sl4j - Logging
-* SnakeYAML - Data structure tool
+* snakeYaml - Data structure tool
 
 Please find details in build.gradle
 
@@ -24,27 +24,25 @@ Please find details in build.gradle
 
 Unix
 ```
-gradlew cucumberTest -Dcucumber.options='--tags @all'
+gradlew cucumberTest -Dcucumber.options='-tags @soap'
 ```
 
 Windows
 ```
-gradlew.bat cucumberTest -Dcucumber.options="--tags @all"
+gradlew.bat cucumberTest
 ```
 
 ## Test Scope
 
-Basically, there are three parts I've been implemented in the tests:
+Basically, there are six parts below I've been implemented in the tests:
 1. SOAP
 2. REST
 3. Mock
-
-The first two kinds of test are sending request, expecting response and assert the contents.
-Mock test is to create local mock service firstly and then send request to it, verify if response is as expected.
+4. SFTP
+5. Wss4j (SOAP)
+6. Web automation
  
 ## TODO
 
-* Integrate JMeter into the framework
-* Integrate Selenium/UI into the framework
-* Optimize gradle build
-* Optimize framework structure
+* Integrate Gatling into the framework
+* Complete web automation part
