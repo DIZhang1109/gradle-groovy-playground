@@ -18,7 +18,7 @@ Then(~/^I should know the math result of (\w+) is (\d+)$/) { String action, int 
     writeSOAPResponse(soapResponse.text)
     def soapResponseBody = new XmlSlurper().parseText(soapResponse.text)
 
-    def actionResponseNode = action + 'Response'
-    def actionResultNode = action + 'Result'
+    String actionResponseNode = action + 'Response'
+    String actionResultNode = action + 'Result'
     assertThat soapResponseBody.Body."$actionResponseNode"."$actionResultNode".text(), is(result as String)
 }

@@ -23,6 +23,6 @@ Then(~/^I should know exchange rate of (\w+) is between (.+) and (.+)$/) { Strin
     writeRESTResponse((restResponse as Response).contentAsString)
 
     def jsonResponse = new JsonSlurper().parseText((restResponse as Response).contentAsString)
-    def result = jsonResponse.rates."$destCurrency" as BigDecimal
+    BigDecimal result = jsonResponse.rates."$destCurrency" as BigDecimal
     assertThat 'Out of range!!!', result, both(greaterThan(min)) & lessThan(max)
 }

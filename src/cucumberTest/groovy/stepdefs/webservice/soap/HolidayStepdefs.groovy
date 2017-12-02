@@ -18,7 +18,7 @@ Then(~/^I should know (.+) of (\d+) is (.+)$/) { String holiday, int year, Strin
     writeSOAPResponse(soapResponse.text)
     def soapResponseBody = new XmlSlurper().parseText(soapResponse.text)
 
-    def holidayResponseNode = 'Get' + holiday.replaceAll('\\s', '') + 'Response'
-    def holidayResultNode = 'Get' + holiday.replaceAll('\\s', '') + 'Result'
+    String holidayResponseNode = 'Get' + holiday.replaceAll('\\s', '') + 'Response'
+    String holidayResultNode = 'Get' + holiday.replaceAll('\\s', '') + 'Result'
     assertThat soapResponseBody.Body."$holidayResponseNode"."$holidayResultNode".text().take(10), is(year + '-' + date)
 }

@@ -24,7 +24,7 @@ Then(~/^I should know the current temperature is between (\d+)°C and (\d+)°C$/
     writeRESTResponse((restResponse as Response).contentAsString)
 
     def jsonResponse = new JsonSlurper().parseText((restResponse as Response).contentAsString)
-    def status = jsonResponse.HeWeather5[0].status
+    String status = jsonResponse.HeWeather5[0].status
     if (status == 'unknown city') {
         fail 'Invalid city'
     } else if (status == 'invalid key') {
