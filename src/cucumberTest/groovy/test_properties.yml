@@ -8,9 +8,3 @@ REST:
   Mock: http://localhost:8089/mock
 SFTP:
   Sample: test.rebex.net
-
-# Payload - Mock restResponse
-MOCK:
-  greet: /greet/mock.txt
-  greetJSON: /greetJSON/mock.json
-  greetXML: /greetXML/mock.xml

@@ -15,10 +15,14 @@ class UtilityService {
     Scenario scenario
 
     void writeSOAPResponse(String content) {
-        scenario.write('SOAP Response:' + System.getProperty('line.separator') + XmlUtil.serialize(content))
+        scenario.write 'SOAP Response:' + System.getProperty('line.separator') + XmlUtil.serialize(content)
     }
 
     void writeRESTResponse(String content) {
-        scenario.write('REST Response:' + System.getProperty('line.separator') + JsonOutput.prettyPrint(content))
+        scenario.write 'REST Response:' + System.getProperty('line.separator') + JsonOutput.prettyPrint(content)
+    }
+
+    void writePlainText(String content) {
+        scenario.write content
     }
 }

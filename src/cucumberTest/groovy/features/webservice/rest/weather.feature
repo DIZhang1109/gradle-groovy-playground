@@ -15,6 +15,6 @@ Feature:
 
     Examples:
       | City       | Min | Max |
-      | Wellington | 0   | 20  |
+      | Wellington | 0   | 25  |
       | Shanghai   | 10  | 30  |
-      | Auckland   | 5   | 20  |
+      | Auckland   | 5   | 25  |

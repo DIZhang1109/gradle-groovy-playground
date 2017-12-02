@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <SOAP-ENV:Header>
+        <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" SOAP-ENV:mustUnderstand="1">
+            <wsu:Timestamp wsu:Id="TS-356474FCCCD6D8EAA215120358073266">
+                <wsu:Created>2017-11-30T09:56:47.324Z</wsu:Created>
+                <wsu:Expires>2017-12-01T02:36:47.324Z</wsu:Expires>
+            </wsu:Timestamp>
+        </wsse:Security>
+    </SOAP-ENV:Header>
+    <SOAP-ENV:Body>
+        <add xmlns="http://ws.apache.org/counter/counter_port_type">
+            <value xmlns="">15</value>
+        </add>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

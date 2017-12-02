@@ -17,4 +17,4 @@ Feature:
       | Base Currency | Dest Currency | Min | Max |
       | NZD           | CNY           | 4.0 | 4.8 |
       | USD           | NZD           | 1.0 | 1.8 |
-      | SGD           | CNY           | 4.5 | 4.9 |
+      | SGD           | CNY           | 4.5 | 5.0 |

@@ -1,6 +1,6 @@
 package stepdefs.hook
 
-import sftpservice.SFTPService
+import sftp.SFTPService
 
 import static cucumber.api.groovy.Hooks.World
 

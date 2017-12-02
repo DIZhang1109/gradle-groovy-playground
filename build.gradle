@@ -6,8 +6,8 @@ plugins {
 }
 
 group = 'di'
-version = '1.0.2'
-project.description = 'This gradle test automation project is built for quick start of api/sftp testing'
+version = '1.0.3'
+project.description = 'This gradle test automation project is built for quick start of api/sftp/wss4j testing'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -20,10 +20,12 @@ ext {
     hamcrestVersion = '2.0.0.0'
     wsliteVersion = '1.1.3'
     wireMockVersion = '2.7.1'
-    slf4jVersion = '1.7.25'
-    snakeyamlVersion = '1.18'
+    jschVersion = '0.1.54'
+    wss4jVersion = '1.6.19'
     gebVersion = '2.0'
     seleniumVersion = '3.6.0'
+    slf4jVersion = '1.7.25'
+    snakeyamlVersion = '1.18'
 }
 
 repositories {
@@ -50,7 +52,10 @@ dependencies {
     compile "com.github.tomakehurst:wiremock:$wireMockVersion"
 
     // jsch
-    compile group: 'com.jcraft', name: 'jsch', version: '0.1.54'
+    compile "com.jcraft:jsch:$jschVersion"
+
+    // wss4j
+    compile "org.apache.ws.security:wss4j:$wss4jVersion"
 
     // Geb
     testCompile "org.gebish:geb-junit4:$gebVersion"
@@ -65,7 +70,6 @@ dependencies {
     // Snakeyaml
     compile "org.yaml:snakeyaml:$snakeyamlVersion"
 }
-
 
 webdriverBinaries {
     chromedriver '2.33'

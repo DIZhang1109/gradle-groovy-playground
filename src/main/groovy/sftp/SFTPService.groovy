@@ -1,4 +1,4 @@
-package sftpservice
+package sftp
 
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.ChannelSftp.LsEntry
