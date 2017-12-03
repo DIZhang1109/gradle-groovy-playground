@@ -67,6 +67,13 @@ Then(~/^I apply security header (\w+) to it$/) { String type ->
         wssEntries.add timestamp
     } else if (type == 'Username') {
         wssEntries.add usernameToken
+    } else if (type == 'All') {
+        wssEntries.with {
+            add encryption
+            add signature
+            add timestamp
+            add usernameToken
+        }
     }
 
     generateSecurityHeader type, wssEntries

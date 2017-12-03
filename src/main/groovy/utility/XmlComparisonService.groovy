@@ -64,6 +64,19 @@ class XmlComparisonService {
                     .withDifferenceEvaluator(DifferenceEvaluators.chain(new IgnoreAttributeDifferenceEvaluator('wsu:Id'),
                     new IgnoreElementDifferenceEvaluator('wsse:Nonce'), new IgnoreElementDifferenceEvaluator('wsu:Created')))
                     .build()
+        } else if (type == 'All') {
+            diff = DiffBuilder.compare(expectedXml)
+                    .withTest(actualXml)
+                    .checkForSimilar()
+                    .ignoreComments()
+                    .ignoreWhitespace()
+                    .normalizeWhitespace()
+                    .withDifferenceEvaluator(DifferenceEvaluators.chain(new IgnoreAttributeDifferenceEvaluator('wsu:Id'),
+                    new IgnoreElementDifferenceEvaluator('wsse:Nonce'), new IgnoreElementDifferenceEvaluator('wsu:Created'),
+                    new IgnoreElementDifferenceEvaluator('wsu:Expires'), new IgnoreAttributeDifferenceEvaluator('Id'),
+                    new IgnoreAttributeDifferenceEvaluator('URI'), new IgnoreElementDifferenceEvaluator('ds:DigestValue'),
+                    new IgnoreElementDifferenceEvaluator('ds:SignatureValue'), new IgnoreElementDifferenceEvaluator('xenc:CipherValue')))
+                    .build()
         }
 
         assertThat 'Difference: ' + diff.toString(), diff.hasDifferences(), is(false)

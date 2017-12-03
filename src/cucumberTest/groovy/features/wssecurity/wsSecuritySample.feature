@@ -16,3 +16,4 @@ Feature:
       | Signature  |
       | Timestamp  |
       | Username   |
+      | All        |
