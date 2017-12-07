@@ -1,6 +1,6 @@
 # Introduction
 
-![Build Status](https://travis-ci.org/DIZhang1109/gradle-groovy-playground.svg?branch=master)
+[![Build Status](https://travis-ci.org/DIZhang1109/gradle-groovy-playground.svg?branch=master)](https://travis-ci.org/DIZhang1109/gradle-groovy-playground)
 
 This is a test automation framework built based on Gradle and Groovy.
 
