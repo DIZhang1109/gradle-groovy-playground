@@ -32,10 +32,10 @@ class SoapService implements EndpointService {
 
     def sendSOAPRequest() {
         try {
-            client.send connectTimeout: 5000, readTimeout: 10000, soapRequest
+            return client.send(connectTimeout: 5000, readTimeout: 10000, soapRequest)
         } catch (SOAPFaultException sfe) {
             log.info "SOAP Fault Exception: ${sfe.httpResponse.statusCode}"
-            sfe.httpResponse
+            return sfe.httpResponse
         } catch (Exception e) {
             log.warn 'Exception: ' + e.message
         }
