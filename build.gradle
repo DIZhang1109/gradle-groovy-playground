@@ -16,6 +16,7 @@ ext {
     groovyVersion = '2.4.11'
     cucumberVersion = '2.0.1'
     cucumberReportVersion = '1.3'
+    cucumberPrettyReportVersion = '3.12.0'
     junitVersion = '4.12'
     hamcrestVersion = '2.0.0.0'
     xmlunitVersion = '2.5.0'
@@ -41,6 +42,7 @@ dependencies {
     compile "io.cucumber:cucumber-groovy:$cucumberVersion"
     testCompile "io.cucumber:cucumber-junit:$cucumberVersion"
     compile "com.github.mkolisnyk:cucumber-runner:$cucumberReportVersion"
+    compile "net.masterthought:cucumber-reporting:$cucumberPrettyReportVersion"
 
     // junit and hamcrest
     testCompile "junit:junit:$junitVersion"

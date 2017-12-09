@@ -1,5 +1,5 @@
 @webservice @mock
-Feature:
+Feature: Mock and Stub example
   As a user
   I want to interact with localhost MOCK service
   so as to know the mock service is okay

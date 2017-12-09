@@ -1,5 +1,5 @@
 @webservice @soap
-Feature:
+Feature: Web service security - wss4j
   As a user
   I want to implement security header to Soap request
   so as to know message has been signed

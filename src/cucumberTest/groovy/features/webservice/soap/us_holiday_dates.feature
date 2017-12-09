@@ -1,5 +1,5 @@
 @webservice @soap
-Feature:
+Feature: SOAP example - US Holiday dates
   As a user
   I want to interact with USHolidayDates SOAP service
   so as to know national holidays dates in US

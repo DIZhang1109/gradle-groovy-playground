@@ -1,5 +1,5 @@
 @webservice @rest
-Feature:
+Feature: REST example - Currency
   As a user
   I want to interact with Currency REST service
   so as to know the currency information

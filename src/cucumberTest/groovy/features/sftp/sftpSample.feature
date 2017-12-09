@@ -1,5 +1,5 @@
 @sftp
-Feature:
+Feature: SFTP example
   As a user
   I want to interact with SFTP service
   so as to know the SFTP server is okay

@@ -1,5 +1,5 @@
 @webservice @rest
-Feature:
+Feature: REST example - Weather
   As a user
   I want to interact with Weather REST service
   so as to know the weather result of a specific location

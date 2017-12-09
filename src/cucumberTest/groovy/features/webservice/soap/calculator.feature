@@ -1,5 +1,5 @@
 @webservice @soap
-Feature:
+Feature: SOAP example - Calculator
   As a user
   I want to interact with Calculator SOAP service
   so as to know the math result of two numbers
