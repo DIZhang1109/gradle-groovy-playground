@@ -16,5 +16,5 @@ Feature: REST example - Weather
     Examples:
       | City       | Min | Max |
       | Wellington | 10  | 25  |
-      | Shanghai   | 0   | 15  |
+      | Shanghai   | 0   | 20  |
       | Auckland   | 10  | 30  |
