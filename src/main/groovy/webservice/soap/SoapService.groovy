@@ -24,10 +24,18 @@ class SoapService implements EndpointService {
         client = new SOAPClient(endpoint)
     }
 
+    private static String getPayloadPath(String service) {
+        "src/cucumberTest/resources/payload/webservice/soap/$service/request.xml"
+    }
+
     String getPayload(String service, Map binding) {
         def templateEngine = new SimpleTemplateEngine()
-        String payloadPath = "src/cucumberTest/resources/payload/webservice/soap/$service/request.xml"
-        soapRequest = templateEngine.createTemplate(new File(payloadPath).text).make(binding).toString()
+        try {
+            soapRequest = templateEngine.createTemplate(new File(getPayloadPath(service)).text).make(binding).toString()
+        } catch (IOException e) {
+            log.error "Payload path ${getPayloadPath(service)} not exist!!! " + e.toString()
+            soapRequest = null
+        }
     }
 
     def sendSOAPRequest() {
