@@ -10,6 +10,7 @@ This is a test automation framework built based on Gradle and Groovy.
 * groovy - Programming language
 * cucumber - BDD tool
 * junit/hamcrest - Test framework
+* spock - Unit test framework
 * groovy-wslite - Web service
 * wiremock - Mock and stub
 * jsch - SFTP
@@ -20,16 +21,18 @@ This is a test automation framework built based on Gradle and Groovy.
 
 Please find details in build.gradle
 
-## Test
+## Cucumber Test
 
 Unix
 ```
 gradlew cucumberTest -Dcucumber.options='-tags @soap'
 ```
 
-Windows
+## Spock Test
+
+Unix
 ```
-gradlew.bat cucumberTest
+gradlew spockTest
 ```
 
 ## Test Scope
@@ -41,8 +44,8 @@ Basically, there are six parts below I've been implemented in the tests:
 4. SFTP
 5. Wss4j (SOAP)
 6. Web automation
+7. Unit Test
  
 ## TODO
 
 * Integrate Gatling into the framework
-* Complete web automation part
