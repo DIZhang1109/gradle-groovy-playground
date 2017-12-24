@@ -3,9 +3,11 @@ package sftp
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.ChannelSftp.LsEntry
 import com.jcraft.jsch.JSch
+import com.jcraft.jsch.JSchException
 import com.jcraft.jsch.Session
 import groovy.util.logging.Slf4j
 import model.EndpointService
+import static org.junit.Assert.fail
 
 /**
  * Created by Di on 11/11/17.
@@ -25,10 +27,18 @@ class SftpService implements EndpointService {
     void connectToSFTP() {
         JSch.setConfig 'StrictHostKeyChecking', 'no'
         JSch jsch = new JSch()
-        session = jsch.getSession('demo', endpoint, 22)
-        session.setPassword 'password'
-        session.connect 30000
-        (session.connected) ? log.info('Connected to SFTP server successfully') : log.info('Error connected to SFTP server')
+        if (endpoint) {
+            try {
+                session = jsch.getSession('demo', endpoint, 22)
+                session.setPassword 'password'
+                session.connect 30000
+                (session.connected) ? log.info('Connected to SFTP server successfully') : log.info('Error connected to SFTP server')
+            } catch (JSchException e) {
+                log.error 'Unable to connect to SFTP server: ' + e.toString()
+            }
+        } else {
+            fail 'SFTP server address is not available'
+        }
     }
 
     void connectToSFTPChannel() {
