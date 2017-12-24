@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'di'
-version = '1.0.4'
+version = '1.0.5'
 project.description = 'This gradle test automation project is built for quick start of api/sftp/wss4j testing'
 
 sourceCompatibility = 1.8
@@ -20,6 +20,8 @@ ext {
     junitVersion = '4.12'
     hamcrestVersion = '2.0.0.0'
     xmlunitVersion = '2.5.0'
+    spockVersion = '1.1-groovy-2.4'
+    spockReportVersion = '1.4.0'
     wsliteVersion = '1.1.3'
     wireMockVersion = '2.7.1'
     jschVersion = '0.1.54'
@@ -49,6 +51,10 @@ dependencies {
     testCompile "org.hamcrest:hamcrest-junit:$hamcrestVersion"
     compile "org.xmlunit:xmlunit-core:$xmlunitVersion"
     compile "org.xmlunit:xmlunit-matchers:$xmlunitVersion"
+
+    // spock
+    testCompile "org.spockframework:spock-core:$spockVersion"
+    testCompile "com.athaydes:spock-reports:$spockReportVersion"
 
     // groovy-wslite
     compile "com.github.groovy-wslite:groovy-wslite:$wsliteVersion"
@@ -136,6 +142,13 @@ task cucumberReport(type: JavaExec, dependsOn: 'classes') {
 
     classpath = sourceSets.main.runtimeClasspath
     main = 'utility/ReportGeneration'
+}
+
+task spockTest(type: Test, dependsOn: cleanTest) {
+    description 'Runs all spock tests'
+
+    // bypass up-to-date check to run tests every time
+    outputs.upToDateWhen { false }
 }
 
 // Codenarc - Execute Groovy code static analysis
