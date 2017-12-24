@@ -9,10 +9,10 @@ import model.EndpointService
 
 /**
  * Created by Di on 11/11/17.
- * SFTPService
+ * SftpService
  */
 @Slf4j
-class SFTPService implements EndpointService {
+class SftpService implements EndpointService {
     Session session
     ChannelSftp channel
     int fileAmount
