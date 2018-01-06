@@ -126,9 +126,6 @@ configurations {
 task cucumber(type: Test, dependsOn: cleanTest) {
     description 'Runs all cucumber tests through Cucumber JUnit'
 
-    // bypass up-to-date check to run tests every time
-    outputs.upToDateWhen { false }
-
     // setup test dir and classpath
     setTestClassesDirs sourceSets.cucumber.output.classesDirs
     classpath = sourceSets.cucumber.runtimeClasspath
@@ -136,20 +133,9 @@ task cucumber(type: Test, dependsOn: cleanTest) {
     // set a system property for the test JVM(s) - for cucumber options
     systemProperty 'cucumber.options', System.properties.getProperty('cucumber.options')
 
-    // set up driver class to use ['htmlunit', 'firefox', 'ie', 'chrome', 'edge']
-    systemProperty 'geb.driver', System.properties.getProperty('driver')
-
     // set up basic slf4j properties
     systemProperty 'org.slf4j.simpleLogger.showDateTime', 'true'
     systemProperty 'org.slf4j.simpleLogger.dateTimeFormat', 'yyyy-MM-dd\'T\'HH:mm:ss'
-
-    // show standard out and standard error of the test JVM(s) on the console
-    testLogging.showStandardStreams = true
-
-    // disable default html report
-    reports {
-        html.enabled = false
-    }
 
     // execute cucumberReport task at the last
     finalizedBy 'cucumberReport'
@@ -164,25 +150,30 @@ task cucumberReport(type: JavaExec, dependsOn: 'classes') {
 
 task unitTest(type: Test, dependsOn: cleanTest) {
     description 'Runs all unit tests'
-
-    testLogging.showStandardStreams = true
-
-    outputs.upToDateWhen { false }
 }
 
 task spock(type: Test, dependsOn: cleanTest) {
     description 'Runs all Geb tests through Spock'
 
-    testLogging.showStandardStreams = true
-
-    outputs.upToDateWhen { false }
-
+    // setup test dir and classpath
     setTestClassesDirs sourceSets.spock.output.classesDirs
     classpath = sourceSets.spock.runtimeClasspath
 
-    systemProperty 'geb.driver', System.properties.getProperty('driver')
+    // specify geb report directory
     systemProperty 'geb.build.reportsDir', reporting.file("geb/$name")
+}
 
+tasks.withType(Test) {
+    // bypass up-to-date check to run tests every time
+    outputs.upToDateWhen { false }
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // set up driver class to use ['htmlunit', 'firefox', 'ie', 'chrome', 'edge']
+    systemProperty 'geb.driver', System.properties.getProperty('driver')
+
+    // disable default html report
     reports {
         html.enabled = false
     }
