@@ -53,7 +53,9 @@ dependencies {
     compile "org.xmlunit:xmlunit-matchers:$xmlunitVersion"
 
     // spock
-    testCompile "org.spockframework:spock-core:$spockVersion"
+    testCompile "org.spockframework:spock-core:$spockVersion", {
+        exclude module: 'groovy-all'
+    }
     testCompile "com.athaydes:spock-reports:$spockReportVersion"
 
     // groovy-wslite
@@ -148,7 +150,7 @@ task cucumberReport(type: JavaExec, dependsOn: 'classes') {
     main = 'utility/ReportGeneration'
 }
 
-task spockTest(type: Test, dependsOn: cleanTest) {
+task spock(type: Test, dependsOn: cleanTest) {
     description 'Runs all spock tests'
 
     // bypass up-to-date check to run tests every time

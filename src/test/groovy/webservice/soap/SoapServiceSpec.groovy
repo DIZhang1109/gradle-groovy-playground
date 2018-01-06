@@ -49,11 +49,11 @@ class SoapServiceSpec extends Specification {
 
         where: "some scenarios"
         service          | map                                           || payload
-        'Calculator'     | ['action': 'Add', 'num1': 20, 'num2': 50]     || new SimpleTemplateEngine().createTemplate(new File("src/cucumberTest/resources/payload/webservice/soap/$service/request.xml").text).make(map).toString()
+        'Calculator'     | ['action': 'Add', 'num1': 20, 'num2': 50]     || new SimpleTemplateEngine().createTemplate(new File("src/cucumber/resources/payload/webservice/soap/$service/request.xml").text).make(map).toString()
         'haha'           | ['action': 'Multiple']                        || null
-        'Calculator'     | ['action': 'Subtract', 'num1': 30, 'num2': 2] || new SimpleTemplateEngine().createTemplate(new File("src/cucumberTest/resources/payload/webservice/soap/$service/request.xml").text).make(map).toString()
-        'USHolidayDates' | ['holiday': "GetChristmasDay", 'year': 2017]  || new SimpleTemplateEngine().createTemplate(new File("src/cucumberTest/resources/payload/webservice/soap/$service/request.xml").text).make(map).toString()
+        'Calculator'     | ['action': 'Subtract', 'num1': 30, 'num2': 2] || new SimpleTemplateEngine().createTemplate(new File("src/cucumber/resources/payload/webservice/soap/$service/request.xml").text).make(map).toString()
+        'USHolidayDates' | ['holiday': "GetChristmasDay", 'year': 2017]  || new SimpleTemplateEngine().createTemplate(new File("src/cucumber/resources/payload/webservice/soap/$service/request.xml").text).make(map).toString()
         'hehe'           | [:]                                           || null
-        'USHolidayDates' | ['holiday': "GetBlackFriday", 'year': 2001]   || new SimpleTemplateEngine().createTemplate(new File("src/cucumberTest/resources/payload/webservice/soap/$service/request.xml").text).make(map).toString()
+        'USHolidayDates' | ['holiday': "GetBlackFriday", 'year': 2001]   || new SimpleTemplateEngine().createTemplate(new File("src/cucumber/resources/payload/webservice/soap/$service/request.xml").text).make(map).toString()
     }
 }

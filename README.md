@@ -25,14 +25,14 @@ Please find details in build.gradle
 
 Unix
 ```
-gradlew cucumberTest -Dcucumber.options='-tags @soap'
+gradlew cucumber -Dcucumber.options='-tags @soap'
 ```
 
 ## Spock Test
 
 Unix
 ```
-gradlew spockTest
+gradlew spock
 ```
 
 ## Test Scope
