@@ -22,7 +22,7 @@ Username usernameToken
 Given(~/^a SOAP request to be signed$/) { ->
     encryption = new Encryption()
     encryption.with {
-        keystoreFilePath = 'src/cucumberTest/resources/payload/wssecurity/encryption/wss40.jks'
+        keystoreFilePath = 'src/cucumber/resources/payload/wssecurity/encryption/wss40.jks'
         alias = 'wss40'
         password = 'security'
         keyIdentifierType = WSConstants.BST_DIRECT_REFERENCE
@@ -33,7 +33,7 @@ Given(~/^a SOAP request to be signed$/) { ->
 
     signature = new Signature()
     signature.with {
-        keystoreFilePath = 'src/cucumberTest/resources/payload/wssecurity/signature/wss40.jks'
+        keystoreFilePath = 'src/cucumber/resources/payload/wssecurity/signature/wss40.jks'
         alias = 'wss40'
         password = 'security'
         keyIdentifierType = WSConstants.BST_DIRECT_REFERENCE

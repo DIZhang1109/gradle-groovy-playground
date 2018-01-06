@@ -25,7 +25,7 @@ class SoapService implements EndpointService {
     }
 
     private static String getPayloadPath(String service) {
-        "src/cucumberTest/resources/payload/webservice/soap/$service/request.xml"
+        "src/cucumber/resources/payload/webservice/soap/$service/request.xml"
     }
 
     String getPayload(String service, Map binding) {

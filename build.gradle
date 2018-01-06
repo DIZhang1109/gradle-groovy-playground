@@ -90,12 +90,12 @@ webdriverBinaries {
 }
 
 sourceSets {
-    cucumberTest {
+    cucumber {
         groovy {
-            srcDirs = ['src/cucumberTest/groovy']
+            srcDirs = ['src/cucumber/groovy']
         }
         resources {
-            srcDirs = ['src/cucumberTest/resources']
+            srcDirs = ['src/cucumber/resources']
         }
         compileClasspath += main.output + test.output
         runtimeClasspath += main.output + test.output
@@ -103,28 +103,27 @@ sourceSets {
 }
 
 configurations {
-    cucumberTestCompile.extendsFrom testCompile
-    cucumberTestRunTime.extendsFrom testRunTime
+    cucumberCompile.extendsFrom testCompile
+    cucumberRunTime.extendsFrom testRunTime
 }
 
-defaultTasks 'cucumberTest'
+defaultTasks 'cucumber'
 
-task cucumberTest(type: Test, dependsOn: cleanTest) {
+task cucumber(type: Test, dependsOn: cleanTest) {
     description 'Runs all cucumber tests through Cucumber JUnit'
 
     // bypass up-to-date check to run tests every time
     outputs.upToDateWhen { false }
 
     // setup test dir and classpath
-    setTestClassesDirs sourceSets.cucumberTest.output.classesDirs
-    classpath = sourceSets.cucumberTest.runtimeClasspath
+    setTestClassesDirs sourceSets.cucumber.output.classesDirs
+    classpath = sourceSets.cucumber.runtimeClasspath
 
     // set a system property for the test JVM(s) - for cucumber options
     systemProperty 'cucumber.options', System.properties.getProperty('cucumber.options')
 
     // set up driver class to use ['htmlunit', 'firefox', 'ie', 'chrome', 'edge']
     systemProperty 'geb.driver', System.properties.getProperty('driver')
-    systemProperty 'geb.cucumber.step.packages', "webautomation/pages"
 
     // set up basic slf4j properties
     systemProperty 'org.slf4j.simpleLogger.showDateTime', 'true'
@@ -167,7 +166,7 @@ codenarcTest {
     ignoreFailures true
 }
 
-codenarcCucumberTest {
+codenarcCucumber {
     configFile file('src/main/resources/codenarc.groovy')
     ignoreFailures true
 }
