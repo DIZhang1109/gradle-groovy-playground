@@ -165,14 +165,16 @@ task cucumberReport(type: JavaExec, dependsOn: 'classes') {
 task unitTest(type: Test, dependsOn: cleanTest) {
     description 'Runs all unit tests'
 
-    // bypass up-to-date check to run tests every time
+    testLogging.showStandardStreams = true
+
     outputs.upToDateWhen { false }
 }
 
 task spock(type: Test, dependsOn: cleanTest) {
     description 'Runs all Geb tests through Spock'
 
-    // bypass up-to-date check to run tests every time
+    testLogging.showStandardStreams = true
+
     outputs.upToDateWhen { false }
 
     setTestClassesDirs sourceSets.spock.output.classesDirs
