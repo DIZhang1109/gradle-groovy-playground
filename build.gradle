@@ -70,12 +70,11 @@ dependencies {
     // wss4j
     compile "org.apache.ws.security:wss4j:$wss4jVersion"
 
-    // geb
-    testCompile "org.gebish:geb-junit4:$gebVersion"
-
-    // driver
-    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
-    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+    // geb core and selenium
+    compile "org.gebish:geb-core:$gebVersion"
+    compile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+    compile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+    compile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
 
     // slf4j
     compile "org.slf4j:slf4j-api:$slf4jVersion"
@@ -125,6 +124,7 @@ task cucumberTest(type: Test, dependsOn: cleanTest) {
 
     // set up driver class to use ['htmlunit', 'firefox', 'ie', 'chrome', 'edge']
     systemProperty 'geb.driver', System.properties.getProperty('driver')
+    systemProperty 'geb.cucumber.step.packages', "webautomation/pages"
 
     // set up basic slf4j properties
     systemProperty 'org.slf4j.simpleLogger.showDateTime', 'true'
