@@ -123,8 +123,6 @@ configurations {
     spockRunTime.extendsFrom testRunTime
 }
 
-defaultTasks 'cucumber'
-
 task cucumber(type: Test, dependsOn: cleanTest) {
     description 'Runs all cucumber tests through Cucumber JUnit'
 
