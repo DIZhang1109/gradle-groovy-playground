@@ -1,6 +1,7 @@
 package stepdefs.webautomation
 
-import geb.Browser
+import webautomation.page.GebHomePage
+import webautomation.page.TheBookOfGebPage
 
 import static cucumber.api.groovy.EN.Given
 import static cucumber.api.groovy.EN.Then
@@ -11,25 +12,20 @@ import static cucumber.api.groovy.EN.When
  * geb-manual.feature step definitions
  */
 
-Given(~/^GEB manual website$/) { ->
-    Browser.drive {
-        go('http://gebish.org')
-
-        assert title == 'Geb - Very Groovy Browser Automation'
-    }
+Given(~/^I am on the Geb home page$/) { ->
+    to GebHomePage
 }
 
-When(~/^I visit it$/) { ->
-    Browser.drive {
-        $("div.menu a.manuals").click()
-        waitFor { !$("#manuals-menu").hasClass("animating") }
-
-        $("#manuals-menu a")[0].click()
-    }
+Then(~/^the first heading on the page is '(.+)'$/) { String expectedHeading ->
+    assert page.firstHeading.text() == expectedHeading
 }
 
-Then(~/^I should know the title is (.+)$/) { String pageTitle ->
-    Browser.drive {
-        assert title.startsWith(pageTitle)
-    }
+When(~/^the link to documentation is clicked$/) { ->
+    page.manualsMenu.open()
+
+    page.manualsMenu.links[0].click()
+}
+
+Then(~/^I end up at The Book of Geb$/) { ->
+    at TheBookOfGebPage
 }

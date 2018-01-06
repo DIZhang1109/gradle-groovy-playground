@@ -5,6 +5,7 @@ Feature: Web Automation - Geb manual website
   so as to know the currency information
 
   Scenario: Navigate to Geb manual website and assert its title
-    Given GEB manual website
-    When I visit it
-    Then I should know the title is The Book Of Geb
+    Given I am on the Geb home page
+    Then the first heading on the page is 'What is it?'
+    When the link to documentation is clicked
+    Then I end up at The Book of Geb
