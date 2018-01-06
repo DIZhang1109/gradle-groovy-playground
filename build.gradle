@@ -73,9 +73,9 @@ dependencies {
     compile "org.apache.ws.security:wss4j:$wss4jVersion"
 
     // geb core and selenium
-    compile "org.gebish:geb-core:$gebVersion"
-    compile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
-    compile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+    compile "org.gebish:geb-spock:$gebVersion"
+    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
     compile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
 
     // slf4j
@@ -102,11 +102,25 @@ sourceSets {
         compileClasspath += main.output + test.output
         runtimeClasspath += main.output + test.output
     }
+
+    spock {
+        groovy {
+            srcDirs = ['src/spock/groovy']
+        }
+        resources {
+            srcDirs = ['src/spock/resources']
+        }
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
 }
 
 configurations {
     cucumberCompile.extendsFrom testCompile
     cucumberRunTime.extendsFrom testRunTime
+
+    spockCompile.extendsFrom testCompile
+    spockRunTime.extendsFrom testRunTime
 }
 
 defaultTasks 'cucumber'
@@ -150,11 +164,28 @@ task cucumberReport(type: JavaExec, dependsOn: 'classes') {
     main = 'utility/ReportGeneration'
 }
 
-task spock(type: Test, dependsOn: cleanTest) {
-    description 'Runs all spock tests'
+task unitTest(type: Test, dependsOn: cleanTest) {
+    description 'Runs all unit tests'
 
     // bypass up-to-date check to run tests every time
     outputs.upToDateWhen { false }
+}
+
+task spock(type: Test, dependsOn: cleanTest) {
+    description 'Runs all Geb tests through Spock'
+
+    // bypass up-to-date check to run tests every time
+    outputs.upToDateWhen { false }
+
+    setTestClassesDirs sourceSets.spock.output.classesDirs
+    classpath = sourceSets.spock.runtimeClasspath
+
+    systemProperty 'geb.driver', System.properties.getProperty('driver')
+    systemProperty 'geb.build.reportsDir', reporting.file("geb/$name")
+
+    reports {
+        html.enabled = false
+    }
 }
 
 // Codenarc - Execute Groovy code static analysis

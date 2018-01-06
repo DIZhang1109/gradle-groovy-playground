@@ -11,7 +11,6 @@ import spock.lang.Title
  * Created by Di on 23/12/17.
  * Unit test for SoapService
  */
-
 @Title("Unit test for SoapService")
 @Narrative("Test the methods in SoapService")
 @Subject(SoapService)

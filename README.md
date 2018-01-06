@@ -25,14 +25,21 @@ Please find details in build.gradle
 
 Unix
 ```
-gradlew cucumber -Dcucumber.options='-tags @soap'
+gradlew cucumber -Dcucumber.options="-tags @soap"
 ```
 
 ## Spock Test
 
 Unix
 ```
-gradlew spock
+gradlew spock -Ddriver="chrome"
+```
+
+## Unit Test
+
+Unix
+```
+gradlew unitTest
 ```
 
 ## Test Scope
@@ -43,7 +50,7 @@ Basically, there are six parts below I've been implemented in the tests:
 3. Mock
 4. SFTP
 5. Wss4j (SOAP)
-6. Web automation
+6. Web automation (Geb)
 7. Unit Test
  
 ## TODO

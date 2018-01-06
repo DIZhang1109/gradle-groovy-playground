@@ -10,7 +10,6 @@ import spock.lang.Title
  * Created by Di on 24/12/17.
  * Unit test for RestService
  */
-
 @Title("Unit test for RestService")
 @Narrative("Test the methods in RestService")
 @Subject(RestService)
