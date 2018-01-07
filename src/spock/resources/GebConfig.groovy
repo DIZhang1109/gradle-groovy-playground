@@ -2,7 +2,7 @@ import geb.report.ReportState
 import geb.report.Reporter
 import geb.report.ReportingListener
 
-baseUrl = 'http://gebish.org'
+baseUrl = 'http://www.practiceselenium.com/'
 
 waiting {
     timeout = 10
@@ -14,8 +14,6 @@ waiting {
 atCheckWaiting = true
 
 baseNavigatorWaiting = true
-
-unexpectedPages = [PageNotFoundPage, InternalServerErrorPage]
 
 reportsDir = 'build/geb-reports'
 

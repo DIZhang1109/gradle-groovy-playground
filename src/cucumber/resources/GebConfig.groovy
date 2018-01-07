@@ -15,8 +15,6 @@ atCheckWaiting = true
 
 baseNavigatorWaiting = true
 
-unexpectedPages = [PageNotFoundPage, InternalServerErrorPage]
-
 reportsDir = 'build/geb-reports'
 
 reportingListener = new ReportingListener() {
