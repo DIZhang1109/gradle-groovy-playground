@@ -158,9 +158,6 @@ task spock(type: Test, dependsOn: cleanTest) {
     // setup test dir and classpath
     setTestClassesDirs sourceSets.spock.output.classesDirs
     classpath = sourceSets.spock.runtimeClasspath
-
-    // specify geb report directory
-    systemProperty 'geb.build.reportsDir', reporting.file("geb/$name")
 }
 
 tasks.withType(Test) {

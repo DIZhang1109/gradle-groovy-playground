@@ -17,11 +17,12 @@ class GebManualSpec extends GebSpec {
     def "can access The Book of Geb via homepage"() {
         given: "Navigate to Geb home page"
         to GebHomePage
+        report 'Geb Home'
 
         when: "Click the menu and open the first link"
         manualsMenu.open()
         manualsMenu.links[0].click()
-        report 'Home page'
+        report 'Geb Manual'
 
         then: "At the Geb manual page"
         at TheBookOfGebPage
