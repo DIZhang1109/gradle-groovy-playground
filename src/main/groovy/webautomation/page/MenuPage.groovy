@@ -1,6 +1,7 @@
 package webautomation.page
 
 import geb.Page
+import org.openqa.selenium.By
 
 /**
  * Created by Di on 7/01/18.
@@ -13,5 +14,6 @@ class MenuPage extends Page {
 
     static content = {
         teas { $('strong') }
+        checkoutButtons(to: CheckOutPage) { $(By.linkText('Check Out')) }
     }
 }
