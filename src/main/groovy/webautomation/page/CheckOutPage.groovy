@@ -35,7 +35,7 @@ class CheckOutPage extends Page {
         cardHolderName << billInfo.cardHolderName
         verificationCode << billInfo.verificationCode
 
-        placeOrderButton.click()
+        placeOrderButton.click(MenuPage)
     }
 
     static class BillInfo {

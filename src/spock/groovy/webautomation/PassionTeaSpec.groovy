@@ -90,7 +90,6 @@ class PassionTeaSpec extends GebSpec {
 
         then: "place the order"
         page.placeOrder(billInfo)
-        at MenuPage
 
         where: "there are some test data"
         name       | email                 | address    | cardType     | cardNumber         | cardHolderName | verificationCode
