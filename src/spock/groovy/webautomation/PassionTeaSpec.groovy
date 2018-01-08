@@ -18,7 +18,6 @@ class PassionTeaSpec extends GebSpec {
         driver.manage().window().maximize()
     }
 
-    @IgnoreRest
     def "smoke test for Passion Tea site"() {
         given: "navigate to home page"
         to PassionTeaHomePage
