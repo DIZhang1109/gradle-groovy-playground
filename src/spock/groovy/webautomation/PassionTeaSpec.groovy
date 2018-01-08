@@ -1,7 +1,6 @@
 package webautomation
 
 import geb.spock.GebSpec
-import spock.lang.IgnoreRest
 import spock.lang.Narrative
 import spock.lang.Title
 import webautomation.page.*
@@ -13,10 +12,6 @@ import webautomation.page.*
 @Title('Web automation test for Passion Tea website')
 @Narrative("A consolidated web functional test")
 class PassionTeaSpec extends GebSpec {
-
-    void setupSpec() {
-        driver.manage().window().maximize()
-    }
 
     def "smoke test for Passion Tea site"() {
         given: "navigate to home page"
