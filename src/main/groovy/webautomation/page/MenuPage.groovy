@@ -16,4 +16,8 @@ class MenuPage extends Page {
         teas { $('strong') }
         checkoutButtons(to: CheckOutPage) { $(By.linkText('Check Out')) }
     }
+
+    void checkoutGreenTea() {
+        checkoutButtons[0].click()
+    }
 }

@@ -18,4 +18,19 @@ class LetsTalkTeaPage extends Page {
         message { $('textarea', name: 'message') }
         submitButton { $('input', value: 'Submit') }
     }
+
+    void submitForm(EmailInfo emailInfo) {
+        name << emailInfo.name
+        email << emailInfo.email
+        subject << emailInfo.subject
+        message << emailInfo.message
+        submitButton.click()
+    }
+
+    static class EmailInfo {
+        String name
+        String email
+        String subject
+        String message
+    }
 }

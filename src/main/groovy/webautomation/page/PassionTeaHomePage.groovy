@@ -16,4 +16,11 @@ class PassionTeaHomePage extends Page {
         letsTalkTeaLink { $(By.linkText('Let\'s Talk Tea')) }
         checkOutLink { $("a[data-title='Check Out']") }
     }
+
+    void goThroughEachPage() {
+        ourPassionLink.click()
+        menuLink.click()
+        letsTalkTeaLink.click()
+        checkOutLink.click()
+    }
 }

@@ -3,11 +3,7 @@ package webautomation
 import geb.spock.GebSpec
 import spock.lang.Narrative
 import spock.lang.Title
-import webautomation.page.CheckOutPage
-import webautomation.page.LetsTalkTeaPage
-import webautomation.page.MenuPage
-import webautomation.page.OurPassionPage
-import webautomation.page.PassionTeaHomePage
+import webautomation.page.*
 
 /**
  * Created by Di on 7/01/18.
@@ -27,10 +23,7 @@ class PassionTeaSpec extends GebSpec {
         report 'Home page'
 
         when: "go through each page"
-        ourPassionLink.click()
-        menuLink.click()
-        letsTalkTeaLink.click()
-        checkOutLink.click()
+        goThroughEachPage()
 
         then: "reach Check Out page finally"
         at CheckOutPage
@@ -59,28 +52,53 @@ class PassionTeaSpec extends GebSpec {
         to MenuPage
 
         when: "click Green Tea check out button"
-        checkoutButtons[0].click()
+        checkoutGreenTea()
 
         then: "reach Check Out page"
         at CheckOutPage
     }
 
     def "send email to the website"() {
-        given: "navigate to Let's Talk Tea page"
+        given: "email sending information"
+        def emailInfo = new LetsTalkTeaPage.EmailInfo()
+        emailInfo.name = name
+        emailInfo.email = email
+        emailInfo.subject = subject
+        emailInfo.message = message
+
+        when: "navigate to Let's Talk Tea page"
         to LetsTalkTeaPage
 
-        when: "fill in the form"
-        name << nameValue
-        email << emailValue
-        subject << subjectValue
-        message << messageValue
-
-        then: "click submit button"
-        submitButton.click()
+        then: "submit the form"
+        page.submitForm(emailInfo)
 
         where: 'there are some test data'
-        nameValue  | emailValue            | subjectValue        | messageValue
+        name       | email                 | subject             | message
         'Di Zhang' | 'di.zhang@gmail.com'  | 'Geb is funny'      | 'This is a test message. Please ignore it'
         'Yapi Qi'  | 'yapi.qi@hotmail.com' | 'Selenium is funny' | 'Also another test message. Ignore it.'
+    }
+
+    def "check out order"() {
+        given: "customer billing information"
+        def billInfo = new CheckOutPage.BillInfo()
+        billInfo.name = name
+        billInfo.email = email
+        billInfo.address = address
+        billInfo.cardType = cardType
+        billInfo.cardNumber = cardNumber
+        billInfo.cardHolderName = cardHolderName
+        billInfo.verificationCode = verificationCode
+
+        when: "navigate to Let's Talk Tea page"
+        to CheckOutPage
+
+        then: "place the order"
+        page.placeOrder(billInfo)
+        at MenuPage
+
+        where: "there are some test data"
+        name       | email                 | address    | cardType     | cardNumber         | cardHolderName | verificationCode
+        'Di Zhang' | 'di.zhang@gmail.com'  | 'Shanghai' | 'Visa'       | '1111222233334444' | 'DI ZHANG'     | '123456'
+        'Yapi Qi'  | 'yapi.qi@hotmail.com' | 'Taizhou'  | 'Mastercard' | '5555666677778888' | 'YAPI QI'      | '654321'
     }
 }
