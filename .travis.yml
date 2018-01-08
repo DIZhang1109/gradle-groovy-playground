@@ -4,7 +4,7 @@ jdk:
   - oraclejdk8
 
 script:
-  - ./gradlew unitTest -Ddriver="firefox"
+  - ./gradlew spock unitTest -Ddriver="firefox"
 
 before_script:
   - "export DISPLAY=:99.0"
