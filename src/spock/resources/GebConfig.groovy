@@ -1,8 +1,31 @@
 import geb.report.ReportState
 import geb.report.Reporter
 import geb.report.ReportingListener
+import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.remote.DesiredCapabilities
+import org.openqa.selenium.remote.RemoteWebDriver
 
 baseUrl = 'http://www.practiceselenium.com/'
+
+environments {
+
+    firefox {
+        driver = { new FirefoxDriver() }
+    }
+
+    chrome {
+        driver = { new ChromeDriver() }
+    }
+
+    // This is a simple web driver test in docker-selenium
+    remote {
+        driver = {
+            def remoteWebDriverServerUrl = new URL('http://localhost:4444/wd/hub')
+            new RemoteWebDriver(remoteWebDriverServerUrl, DesiredCapabilities.chrome())
+        }
+    }
+}
 
 waiting {
     timeout = 10

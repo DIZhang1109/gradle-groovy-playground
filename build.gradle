@@ -28,6 +28,7 @@ ext {
     wss4jVersion = '1.6.19'
     gebVersion = '2.0'
     seleniumVersion = '3.6.0'
+    videoRecorderVersion = '1.+'
     slf4jVersion = '1.7.25'
     snakeyamlVersion = '1.18'
 }
@@ -77,6 +78,9 @@ dependencies {
     testCompile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
     testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
     compile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+
+    // video recorder for geb test
+    compile "com.automation-remarks:video-recorder-junit:$videoRecorderVersion"
 
     // slf4j
     compile "org.slf4j:slf4j-api:$slf4jVersion"
@@ -158,7 +162,21 @@ task spock(type: Test) {
     // setup test dir and classpath
     setTestClassesDirs sourceSets.spock.output.classesDirs
     classpath = sourceSets.spock.runtimeClasspath
+
+    // execute videoReportCopy task at the last
+    finalizedBy 'videoReportCopy', 'deleteVideoFolder'
 }
+
+task videoReportCopy(type: Copy) {
+    from 'video'
+    into 'build/video-reports'
+}
+
+task deleteVideoFolder(type: Delete) {
+    delete 'video'
+}
+
+deleteVideoFolder.mustRunAfter videoReportCopy
 
 tasks.withType(Test) {
     dependsOn cleanTest
@@ -170,7 +188,7 @@ tasks.withType(Test) {
     testLogging.showStandardStreams = true
 
     // set up driver class to use ['htmlunit', 'firefox', 'ie', 'chrome', 'edge']
-    systemProperty 'geb.driver', System.properties.getProperty('driver')
+    systemProperty 'geb.env', System.properties.getProperty('driver')
 
     // disable default html report
     reports {

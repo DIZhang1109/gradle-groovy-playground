@@ -1,6 +1,10 @@
 package webautomation
 
+import com.automation.remarks.junit.VideoRule
+import com.automation.remarks.video.annotations.Video
 import geb.spock.GebSpec
+import org.junit.Rule
+import org.junit.rules.TestRule
 import spock.lang.Narrative
 import spock.lang.Title
 import webautomation.page.*
@@ -13,6 +17,10 @@ import webautomation.page.*
 @Narrative("A consolidated web functional test")
 class PassionTeaSpec extends GebSpec {
 
+    @Rule
+    TestRule videoRule = new VideoRule()
+
+    @Video(name = 'Smoke Test')
     def "smoke test for Passion Tea site"() {
         given: "navigate to home page"
         to PassionTeaHomePage
@@ -54,6 +62,7 @@ class PassionTeaSpec extends GebSpec {
         at CheckOutPage
     }
 
+    @Video(name = 'Send email')
     def "send email to the website"() {
         given: "email sending information"
         def emailInfo = new LetsTalkTeaPage.EmailInfo()
@@ -74,6 +83,7 @@ class PassionTeaSpec extends GebSpec {
         'Yapi Qi'  | 'yapi.qi@hotmail.com' | 'Selenium is funny' | 'Also another test message. Ignore it.'
     }
 
+    @Video(name = 'Check out order')
     def "check out order"() {
         given: "customer billing information"
         def billInfo = new CheckOutPage.BillInfo()
