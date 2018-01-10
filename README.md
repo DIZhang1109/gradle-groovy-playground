@@ -42,6 +42,13 @@ Unix
 gradlew unitTest
 ```
 
+## Performance Test
+
+Unix
+```
+gradlew gatlingRun
+```
+
 ## Test Scope
 
 Basically, there are six parts below I've been implemented in the tests:
