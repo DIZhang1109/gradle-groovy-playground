@@ -17,3 +17,6 @@ gradle-app.setting
 .DS_Store
 .settings/
 gradle-groovy-playground.iml
+
+# Video
+/video
