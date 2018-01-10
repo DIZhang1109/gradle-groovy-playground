@@ -171,6 +171,9 @@ task deleteVideoFolder(type: Delete) {
 deleteVideoFolder.mustRunAfter videoReportCopy
 
 tasks.withType(Test) {
+    // group into verification
+    group 'verification'
+
     dependsOn cleanTest
 
     // bypass up-to-date check to run tests every time
