@@ -1,0 +1,205 @@
+plugins {
+    id 'idea'
+    id 'groovy'
+    id 'codenarc'
+    id 'com.energizedwork.webdriver-binaries' version '1.0'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext {
+    groovyVersion = '2.4.11'
+    cucumberVersion = '2.0.1'
+    cucumberReportVersion = '1.3'
+    cucumberPrettyReportVersion = '3.12.0'
+    junitVersion = '4.12'
+    hamcrestVersion = '2.0.0.0'
+    xmlunitVersion = '2.5.0'
+    spockVersion = '1.1-groovy-2.4'
+    spockReportVersion = '1.4.0'
+    wsliteVersion = '1.1.3'
+    wireMockVersion = '2.7.1'
+    jschVersion = '0.1.54'
+    wss4jVersion = '1.6.19'
+    gebVersion = '2.0'
+    seleniumVersion = '3.6.0'
+    videoRecorderVersion = '1.+'
+    slf4jVersion = '1.7.25'
+    snakeyamlVersion = '1.18'
+}
+
+dependencies {
+    // groovy
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+
+    // cucumber, cucumber-junit and cucumber-report
+    compile "io.cucumber:cucumber-groovy:$cucumberVersion"
+    testCompile "io.cucumber:cucumber-junit:$cucumberVersion"
+    compile "com.github.mkolisnyk:cucumber-runner:$cucumberReportVersion"
+    compile "net.masterthought:cucumber-reporting:$cucumberPrettyReportVersion"
+
+    // junit and hamcrest
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.hamcrest:hamcrest-junit:$hamcrestVersion"
+    compile "org.xmlunit:xmlunit-core:$xmlunitVersion"
+    compile "org.xmlunit:xmlunit-matchers:$xmlunitVersion"
+
+    // spock
+    testCompile "org.spockframework:spock-core:$spockVersion", {
+        exclude module: 'groovy-all'
+    }
+    testCompile "com.athaydes:spock-reports:$spockReportVersion"
+
+    // groovy-wslite
+    compile "com.github.groovy-wslite:groovy-wslite:$wsliteVersion"
+
+    // wiremock
+    compile("com.github.tomakehurst:wiremock:$wireMockVersion") {
+        exclude module: 'xmlunit-core'
+    }
+
+    // jsch
+    compile "com.jcraft:jsch:$jschVersion"
+
+    // wss4j
+    compile "org.apache.ws.security:wss4j:$wss4jVersion"
+
+    // geb core and selenium
+    compile "org.gebish:geb-spock:$gebVersion"
+    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
+    compile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+
+    // video recorder for geb test
+    compile "com.automation-remarks:video-recorder-junit:$videoRecorderVersion"
+
+    // slf4j
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    testCompile "org.slf4j:slf4j-simple:$slf4jVersion"
+
+    // snakeyaml
+    compile "org.yaml:snakeyaml:$snakeyamlVersion"
+}
+
+webdriverBinaries {
+    chromedriver '2.33'
+    geckodriver '0.19.1'
+}
+
+sourceSets {
+    cucumber {
+        groovy {
+            srcDirs = ['src/cucumber/groovy']
+        }
+        resources {
+            srcDirs = ['src/cucumber/resources']
+        }
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+
+    spock {
+        groovy {
+            srcDirs = ['src/spock/groovy']
+        }
+        resources {
+            srcDirs = ['src/spock/resources']
+        }
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+configurations {
+    cucumberCompile.extendsFrom testCompile
+    cucumberRunTime.extendsFrom testRunTime
+
+    spockCompile.extendsFrom testCompile
+    spockRunTime.extendsFrom testRunTime
+}
+
+task cucumber(type: Test) {
+    description 'Runs all cucumber tests through Cucumber JUnit'
+
+    // setup test dir and classpath
+    setTestClassesDirs sourceSets.cucumber.output.classesDirs
+    classpath = sourceSets.cucumber.runtimeClasspath
+
+    // set a system property for the test JVM(s) - for cucumber options
+    systemProperty 'cucumber.options', System.properties.getProperty('cucumber.options')
+
+    // set up basic slf4j properties
+    systemProperty 'org.slf4j.simpleLogger.showDateTime', 'true'
+    systemProperty 'org.slf4j.simpleLogger.dateTimeFormat', 'yyyy-MM-dd\'T\'HH:mm:ss'
+
+    // execute cucumberReport task at the last
+    finalizedBy 'cucumberReport'
+}
+
+task cucumberReport(type: JavaExec, dependsOn: 'classes') {
+    description 'Executes groovy script to create customized cucumber reports'
+
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'utility/ReportGeneration'
+}
+
+task unitTest(type: Test) {
+    description 'Runs all unit tests'
+}
+
+task spock(type: Test) {
+    description 'Runs all Geb tests through Spock'
+
+    // setup test dir and classpath
+    setTestClassesDirs sourceSets.spock.output.classesDirs
+    classpath = sourceSets.spock.runtimeClasspath
+
+    // execute videoReportCopy task at the last
+    finalizedBy 'videoReportCopy', 'deleteVideoFolder'
+}
+
+task videoReportCopy(type: Copy) {
+    from 'video'
+    into 'build/video-reports'
+}
+
+task deleteVideoFolder(type: Delete) {
+    delete 'video'
+}
+
+deleteVideoFolder.mustRunAfter videoReportCopy
+
+tasks.withType(Test) {
+    dependsOn cleanTest
+
+    // bypass up-to-date check to run tests every time
+    outputs.upToDateWhen { false }
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // set up driver class to use ['htmlunit', 'firefox', 'ie', 'chrome', 'edge']
+    systemProperty 'geb.env', System.properties.getProperty('driver')
+
+    // disable default html report
+    reports {
+        html.enabled = false
+    }
+}
+
+// Codenarc - Execute Groovy code static analysis
+codenarcMain {
+    configFile file('src/main/resources/codenarc.groovy')
+    ignoreFailures true
+}
+
+codenarcTest {
+    configFile file('src/main/resources/codenarc.groovy')
+    ignoreFailures true
+}
+
+codenarcCucumber {
+    configFile file('src/main/resources/codenarc.groovy')
+    ignoreFailures true
+}

@@ -17,3 +17,6 @@ include 'services:feature.feature.webservice'
 */
 
 rootProject.name = 'gradle-groovy-playground'
+
+include 'functional-testing'
+include 'performance-testing'
