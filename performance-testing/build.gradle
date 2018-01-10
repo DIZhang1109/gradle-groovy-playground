@@ -1,10 +1,10 @@
 plugins {
     id 'scala'
-    id 'com.github.lkishalmi.gatling' version '0.4.1'
+    id 'com.github.lkishalmi.gatling' version '0.7.1'
 }
 
 ext {
-    scalaVersion = '2.11.8'
+    scalaVersion = '2.12.3'
 }
 
 dependencies {

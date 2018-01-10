@@ -203,3 +203,8 @@ codenarcCucumber {
     configFile file('src/main/resources/codenarc.groovy')
     ignoreFailures true
 }
+
+codenarcSpock {
+    configFile file('src/main/resources/codenarc.groovy')
+    ignoreFailures true
+}
