@@ -16,7 +16,7 @@ gradle-app.setting
 /bin/
 .DS_Store
 .settings/
-gradle-groovy-playground.iml
+test-automation-framework.iml
 
 # Video
 /video

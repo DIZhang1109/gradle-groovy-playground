@@ -51,8 +51,5 @@ Basically, there are six parts below I've been implemented in the tests:
 4. SFTP
 5. Wss4j (SOAP)
 6. Web automation (Geb)
-7. Unit Test
- 
-## TODO
-
-* Integrate Gatling into the framework
+7. Unit Test (Spock)
+8. Gatling (Performance Test)
