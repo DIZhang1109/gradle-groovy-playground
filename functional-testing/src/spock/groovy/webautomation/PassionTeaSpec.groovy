@@ -75,7 +75,7 @@ class PassionTeaSpec extends GebSpec {
         to LetsTalkTeaPage
 
         then: "submit the form"
-        page.submitForm(emailInfo)
+        submitForm(emailInfo)
 
         where: 'there are some test data'
         name       | email                 | subject             | message
@@ -99,7 +99,7 @@ class PassionTeaSpec extends GebSpec {
         to CheckOutPage
 
         then: "place the order"
-        page.placeOrder(billInfo)
+        placeOrder(billInfo)
 
         where: "there are some test data"
         name       | email                 | address    | cardType     | cardNumber         | cardHolderName | verificationCode

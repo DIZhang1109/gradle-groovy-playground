@@ -19,7 +19,7 @@ class LetsTalkTeaPage extends Page {
         submitButton { $('input', value: 'Submit') }
     }
 
-    void submitForm(EmailInfo emailInfo) {
+    def submitForm = { EmailInfo emailInfo ->
         name << emailInfo.name
         email << emailInfo.email
         subject << emailInfo.subject

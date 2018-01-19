@@ -24,7 +24,7 @@ class CheckOutPage extends Page {
         placeOrderButton { $('button') }
     }
 
-    void placeOrder(BillInfo billInfo) {
+    def placeOrder = { BillInfo billInfo ->
         email << billInfo.email
         name << billInfo.name
         address << billInfo.address
